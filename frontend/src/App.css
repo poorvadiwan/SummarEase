@@ -42,3 +42,18 @@ body {
 .header-primary {
   font-family: var(--secondary-font) !important;
 }
+
+.carousel-container {
+  overflow: hidden;
+}
+
+.carousel-wrapper {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carousel-slide {
+  min-width: 400px; /* Adjust as needed */
+  padding: 1rem;
+  box-sizing: border-box;
+}

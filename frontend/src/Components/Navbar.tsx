@@ -7,7 +7,14 @@ const Navbar: React.FC = () => {
     <Container id="navbar" className="bg-primary text-white">
       <Flex justify="between" align="center" py="4">
         <Box id="logo">
-          <Heading weight="medium">SummarEase</Heading>
+          <Heading
+            size={"7"}
+            weight="medium"
+            className="header-primary flex flex-row gap-2 align-center justify-center"
+          >
+            <img src="/Logo.png" className="h-8 w-8" alt="Logo" />
+            SummarEase
+          </Heading>
         </Box>
         <Box className="space-x-4">
           <Link to="/" className="hover:underline">

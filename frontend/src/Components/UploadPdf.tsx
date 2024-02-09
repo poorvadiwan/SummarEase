@@ -25,16 +25,26 @@ const UploadPdf = () => {
   ));
 
   return (
-    <Flex align="center" direction="column" className="mt-12">
+    <Flex align="center" direction="column" className="mt-8 px-4">
       <Box className="flex flex-col gap-4 align-center font-secondary">
-        <Heading size={"8"} align="center" className="header-primary font-thin">
+        <Heading
+          size={"8"}
+          align="center"
+          weight={"regular"}
+          className="header-primary"
+        >
           Upload Research Paper
         </Heading>
-        <Heading size={"6"} align="center" className="header-primary">
-          Get your Summary in a blink of an eye.
+        <Heading
+          size={"6"}
+          align="center"
+          weight={"medium"}
+          className="header-primary"
+        >
+          Understand your papers better and in style
         </Heading>
       </Box>
-      <Box className="flex flex-col gap-0 align-center justify-center p-4 border-2 border-dashed w-[60vw] mt-12">
+      <Box className="flex flex-col gap-0 align-center justify-center p-4 border-2 border-gray-600 border-dashed w-[60vw] mt-8 rounded-xl">
         {/* DROPZONE */}
         <label
           htmlFor="fileInput"
@@ -50,21 +60,26 @@ const UploadPdf = () => {
             ) : isDragActive ? (
               <Flex align={"center"} justify={"center"}></Flex>
             ) : (
-              <Flex align={"center"} justify={"center"}>
-                <Text>Drag n Drop pdfs here</Text>
+              <Flex align={"center"} justify={"center"} direction={"column"}>
+                <img
+                  src={"/upload.png"}
+                  className="h-24 w-24"
+                  alt="Drop your pdfs here..."
+                />
+                <Text>Drag and Drop Pdfs Here</Text>
               </Flex>
             )}
           </Box>
         </label>
       </Box>
       <Box className="self-center flex flex-row gap-4 mt-4">
-        <Button variant="classic" size={"4"} onClick={open}>
+        <Button variant="solid" size={"4"} onClick={open}>
           Select from File
         </Button>
 
         {selectedFiles.length > 0 ? (
           <Button
-            variant="classic"
+            variant="outline"
             size={"4"}
             color="crimson"
             onClick={() => {
