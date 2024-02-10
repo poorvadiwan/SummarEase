@@ -4,21 +4,19 @@ interface PDFViewerProps {
   pdfSrc: string;
 }
 
-const PDFViewer: React.FC<PDFViewerProps> = ({ pdfSrc }) => {
+const PdfViewer: React.FC<PDFViewerProps> = ({ pdfSrc }) => {
   return (
     <div className="p-0">
       <iframe
         title="PDF Viewer"
-        // src={`https://docs.google.com/viewer?url=${encodeURIComponent(
-        //   pdfSrc
-        // )}&embedded=true`}
-        // src="/first.pdf"
-        src={pdfSrc}
-        width={500}
-        height={750}
-      ></iframe>
+        src={
+          "https://summar-ease.s3.amazonaws.com/documents/Gmail+-+Reminder+for+IDE+Bootcamp+(Phase+II)+Student+Nomination+For.pdf"
+        }
+        width="100%"
+        height="750px"
+      />
     </div>
   );
 };
 
-export default PDFViewer;
+export default PdfViewer;

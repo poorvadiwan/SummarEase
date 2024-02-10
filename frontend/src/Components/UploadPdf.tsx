@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Flex, Heading, Box, Button, Text } from "@radix-ui/themes";
 import { useDropzone } from "react-dropzone";
+import { sendWMessage } from "../Data/Message";
 
 const UploadPdf = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -17,6 +18,14 @@ const UploadPdf = () => {
       "application/pdf": [".pdf"],
     },
   });
+
+  const handleSubmit = () => {
+    // POST PDF TO BACKEND FOR PROCESSING
+    // OPEN DIALOG FOR EMAIL ENTRY
+    // CALL VONAGE TO SEND MAIL
+    console.log(selectedFiles);
+    sendWMessage();
+  };
 
   const files = selectedFiles.map((file: any) => (
     <li key={file?.path} className="font-bold text-xl">
@@ -74,23 +83,29 @@ const UploadPdf = () => {
         </label>
       </Box>
       <Box className="self-center flex flex-row gap-4 mt-4">
-        <Button variant="solid" size={"4"} onClick={open}>
-          Select from File
-        </Button>
-
         {selectedFiles.length > 0 ? (
-          <Button
-            variant="outline"
-            size={"4"}
-            color="crimson"
-            onClick={() => {
-              setSelectedFiles([]);
-            }}
-          >
-            Cancel
-          </Button>
+          <>
+            <Button variant="solid" size={"4"} onClick={handleSubmit}>
+              Submit
+            </Button>
+
+            <Button
+              variant="outline"
+              size={"4"}
+              color="crimson"
+              onClick={() => {
+                setSelectedFiles([]);
+              }}
+            >
+              Cancel
+            </Button>
+          </>
         ) : (
-          <></>
+          <>
+            <Button variant="solid" size={"4"} onClick={open}>
+              Select File
+            </Button>
+          </>
         )}
       </Box>
     </Flex>

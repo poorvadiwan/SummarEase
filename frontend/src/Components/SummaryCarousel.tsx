@@ -21,6 +21,8 @@ import {
   Button,
   Grid,
 } from "@radix-ui/themes";
+import CardDialog from "./CardDialog";
+import Loader from "./Loading";
 
 // interface SlideItem {
 //   name: string;
@@ -29,11 +31,11 @@ import {
 
 const CustomSlider: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [videoUrl, setVideoUrl] = useState<any>(undefined);
-  const [activeCardPopup, setActiveCardPopup] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activeCard, setActiveCard] = useState<number>(0);
   const [summaries, setSummaries] = useState<any>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [activeCardPopup, setActiveCardPopup] = useState<boolean>(false);
 
   const handleCardClick = (index: number) => {
     setActiveCard(index);
@@ -43,8 +45,10 @@ const CustomSlider: React.FC = () => {
   const fetchAllSummaries = () => {
     getAllSummaries()
       .then((res: any) => {
+        setIsLoading(true);
         console.log(res.data);
         setSummaries(res?.data);
+        setIsLoading(false);
       })
       .catch((err) => console.log(err));
   };
@@ -75,62 +79,12 @@ const CustomSlider: React.FC = () => {
   return (
     <Section className=" overflow-hidden border-t-2 !py-12 " mt={"7"}>
       {/* Dialog for Video */}
-      <Dialog.Root open={activeCardPopup}>
-        <Dialog.Content
-          style={{
-            maxWidth: 1000,
-            maxHeight: "750px",
-            padding: 0,
-            margin: 0,
-            overflow: "hidden",
-          }}
-        >
-          <Grid
-            columns={"2"}
-            // align={"center"}
-            style={{ overflow: "hidden" }}
-          >
-            <Box style={{ overflowY: "hidden" }}>
-              <Dialog.Title
-                className="flex flex-row justify-between bg-primary px-4 py-3 gap-4"
-                style={{ margin: "0 !important" }}
-              >
-                <Text className="text-white heading-primary my-0">
-                  {summaries[activeCard]?.name}
-                </Text>
-                <IconButton
-                  className="cursor-pointer"
-                  style={{ backgroundColor: "white" }}
-                  onClick={() => setActiveCardPopup(false)}
-                >
-                  <Cross1Icon color="black" fontWeight={"5"} />
-                </IconButton>
-              </Dialog.Title>
-              <Dialog.Description
-                size="2"
-                mb="5"
-                style={{ overflow: "hidden" }}
-              >
-                <Flex direction={"column"} gap={"5"}>
-                  <Box>
-                    <ReactPlayer
-                      url={summaries[activeCard]?.video}
-                      height={"400px"}
-                      width={"full"}
-                      controls={true}
-                    />
-                  </Box>
-                  <Text size={"3"} align={"center"} className="px-4">
-                    {summaries[activeCard]?.summary}
-                  </Text>
-                </Flex>
-              </Dialog.Description>
-            </Box>
-            <PdfViewer pdfSrc={summaries[activeCard]?.document} />
-            {/* <PdfViewer pdfSrc={"/first.pdf"} /> */}
-          </Grid>
-        </Dialog.Content>
-      </Dialog.Root>
+      <CardDialog
+        summaries={summaries}
+        activeCard={activeCard}
+        activeCardPopup={activeCardPopup}
+        handleActiveCardPopup={(arg: boolean) => setActiveCardPopup(arg)}
+      />
 
       <Box className="relative">
         {/* Carousel */}
@@ -149,38 +103,44 @@ const CustomSlider: React.FC = () => {
             ref={containerRef}
             className="carousel-wrapper flex flex-row gap-4 overflow-x-scroll hidescrollbar"
           >
-            {summaries.map((item: any, index: number) => (
-              <Card
-                variant="classic"
-                color="crimson"
-                key={index}
-                className="carousel-slide cursor-pointer h-[300px]"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleCardClick(index);
-                }}
-              >
-                <Flex
-                  direction={"column"}
-                  align={"center"}
-                  justify={"center"}
-                  gap={"4"}
+            {isLoading ? (
+              <Box className="flex w-full justify-center">
+                <Loader />
+              </Box>
+            ) : (
+              summaries.map((item: any, index: number) => (
+                <Card
+                  variant="classic"
+                  color="crimson"
+                  key={index}
+                  className="carousel-slide cursor-pointer h-[300px] shadow-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCardClick(index);
+                  }}
                 >
-                  {/* Video Container */}
-                  <Box className="bg-gray-200 flex items-center justify-center">
-                    <video
-                      src={item?.video}
-                      height={"200px"}
-                      width={"400px"}
-                      className="h-[180px] w-[350px]"
-                    />
-                  </Box>
-                  <Box className="flex align-center justify-center font-secondary">
-                    <Text size={"5"}>{item?.name}</Text>
-                  </Box>
-                </Flex>
-              </Card>
-            ))}
+                  <Flex
+                    direction={"column"}
+                    align={"center"}
+                    justify={"center"}
+                    gap={"4"}
+                  >
+                    {/* Video Container */}
+                    <Box className="bg-gray-200 flex items-center justify-center">
+                      <video
+                        src={item?.video}
+                        height={"200px"}
+                        width={"400px"}
+                        className="h-[180px] w-[350px]"
+                      />
+                    </Box>
+                    <Box className="flex align-center justify-center font-secondary">
+                      <Text size={"5"}>{item?.name}</Text>
+                    </Box>
+                  </Flex>
+                </Card>
+              ))
+            )}
           </div>
         </Container>
 

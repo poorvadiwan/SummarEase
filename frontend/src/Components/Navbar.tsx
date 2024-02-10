@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   return (
-    <Container id="navbar" className="bg-primary text-white">
+    <Container id="navbar" className="bg-primary text-white px-8">
       <Flex justify="between" align="center" py="4">
         <Box id="logo">
           <Heading
@@ -17,13 +17,13 @@ const Navbar: React.FC = () => {
           </Heading>
         </Box>
         <Box className="space-x-4">
-          <Link to="/" className="hover:underline">
+          <Link to="/" className="hover:underline text-lg">
             Home
           </Link>
-          <Link to="/trends" className="hover:underline">
+          <Link to="/trends" className="hover:underline text-lg">
             Top Summaries
           </Link>
-          <Link to="/" className="hover:underline">
+          <Link to="/" className="hover:underline text-lg">
             Contact Us
           </Link>
         </Box>
