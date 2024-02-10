@@ -57,3 +57,21 @@ body {
   padding: 1rem;
   box-sizing: border-box;
 }
+
+.glide__arrow {
+  position: absolute;
+  display: block;
+  top: 50%;
+  z-index: 2;
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+.hidescrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hidescrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}

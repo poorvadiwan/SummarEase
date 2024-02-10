@@ -5,7 +5,7 @@ import { Container } from "@radix-ui/themes";
 
 const Home: React.FC = () => {
   return (
-    <Container className="2/3">
+    <Container>
       <UploadPdf />
       <SummaryCarousel />
     </Container>

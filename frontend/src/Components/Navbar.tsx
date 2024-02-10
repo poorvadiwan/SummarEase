@@ -21,10 +21,10 @@ const Navbar: React.FC = () => {
             Home
           </Link>
           <Link to="/" className="hover:underline">
-            About
+            Top Summaries
           </Link>
           <Link to="/" className="hover:underline">
-            Contact
+            Contact Us
           </Link>
         </Box>
       </Flex>

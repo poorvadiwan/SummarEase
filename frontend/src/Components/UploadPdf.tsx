@@ -19,8 +19,8 @@ const UploadPdf = () => {
   });
 
   const files = selectedFiles.map((file: any) => (
-    <li key={file?.path}>
-      {file?.path} - {file.size} bytes
+    <li key={file?.path} className="font-bold text-xl">
+      {file?.path}
     </li>
   ));
 
@@ -28,12 +28,12 @@ const UploadPdf = () => {
     <Flex align="center" direction="column" className="mt-8 px-4">
       <Box className="flex flex-col gap-4 align-center font-secondary">
         <Heading
-          size={"8"}
+          size={"9"}
           align="center"
           weight={"regular"}
           className="header-primary"
         >
-          Upload Research Paper
+          Upload Your File
         </Heading>
         <Heading
           size={"6"}
@@ -41,20 +41,21 @@ const UploadPdf = () => {
           weight={"medium"}
           className="header-primary"
         >
-          Understand your papers better and in style
+          Understand your documents better and in style
         </Heading>
       </Box>
       <Box className="flex flex-col gap-0 align-center justify-center p-4 border-2 border-gray-600 border-dashed w-[60vw] mt-8 rounded-xl">
         {/* DROPZONE */}
         <label
           htmlFor="fileInput"
-          className="flex flex-col gap-8 h-40 cursor-pointer"
+          className="flex flex-col gap-8 h-44 cursor-pointer"
           {...getRootProps()}
         >
           <Box className="h-full w-full flex align-center justify-center">
             <input {...getInputProps()} />
             {selectedFiles.length > 0 ? (
-              <Flex align={"center"} justify={"center"}>
+              <Flex align={"center"} justify={"center"} gap="2">
+                <img src="/pdf.png" alt="PDF" className="h-12 w-12" />
                 <ul>{files}</ul>
               </Flex>
             ) : isDragActive ? (

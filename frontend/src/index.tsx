@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Theme>
-      <div className="font-primary">
+      <div className="font-primary max-h-screen overflow-y-hidden">
         <App />
       </div>
     </Theme>
