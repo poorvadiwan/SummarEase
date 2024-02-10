@@ -1,10 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Flex, Heading, Box, Button, Text } from "@radix-ui/themes";
 import { useDropzone } from "react-dropzone";
 import { sendWMessage } from "../Data/Message";
+import { sendPDF } from "../Data/SummaryData";
 
 const UploadPdf = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [pdfResult, setPdfResult] = useState<any>(null)
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setSelectedFiles(acceptedFiles);
@@ -24,7 +26,8 @@ const UploadPdf = () => {
     // OPEN DIALOG FOR EMAIL ENTRY
     // CALL VONAGE TO SEND MAIL
     console.log(selectedFiles);
-    sendWMessage();
+    sendPDF(selectedFiles[0]).then((res)=>setPdfResult(res)).catch((err)=> console.log(err))
+    // sendWMessage();
   };
 
   const files = selectedFiles.map((file: any) => (
@@ -32,6 +35,10 @@ const UploadPdf = () => {
       {file?.path}
     </li>
   ));
+
+  useEffect(()=>{
+    console.log(pdfResult)
+  },[pdfResult])
 
   return (
     <Flex align="center" direction="column" className="mt-8 px-4">
