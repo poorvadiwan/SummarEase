@@ -19,6 +19,7 @@ import {
   Flex,
   Dialog,
   Button,
+  Grid,
 } from "@radix-ui/themes";
 
 // interface SlideItem {
@@ -84,8 +85,8 @@ const CustomSlider: React.FC = () => {
             overflow: "hidden",
           }}
         >
-          <Flex
-            direction={"row"}
+          <Grid
+            columns={"2"}
             // align={"center"}
             style={{ overflow: "hidden" }}
           >
@@ -127,7 +128,7 @@ const CustomSlider: React.FC = () => {
             </Box>
             <PdfViewer pdfSrc={summaries[activeCard]?.document} />
             {/* <PdfViewer pdfSrc={"/first.pdf"} /> */}
-          </Flex>
+          </Grid>
         </Dialog.Content>
       </Dialog.Root>
 
