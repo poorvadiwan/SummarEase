@@ -28,7 +28,7 @@ const UploadPdf = () => {
     <Flex align="center" direction="column" className="mt-8 px-4">
       <Box className="flex flex-col gap-4 align-center font-secondary">
         <Heading
-          size={"9"}
+          size={"8"}
           align="center"
           weight={"regular"}
           className="header-primary"
@@ -36,7 +36,7 @@ const UploadPdf = () => {
           Upload Your File
         </Heading>
         <Heading
-          size={"6"}
+          size={"5"}
           align="center"
           weight={"medium"}
           className="header-primary"
