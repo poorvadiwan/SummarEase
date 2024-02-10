@@ -1,0 +1,5 @@
+./backend/__pycache__/*
+./summar_ease/__pycache__/*
+.env
+.vscode
+.venv
