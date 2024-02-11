@@ -16,12 +16,12 @@ const Navbar: React.FC = () => {
             SummarEase
           </Heading>
         </Box>
-        <Box className="space-x-4">
+        <Box className="space-x-6">
           <Link to="/" className="hover:underline text-lg">
             Home
           </Link>
           <Link to="/trends" className="hover:underline text-lg">
-            Top Summaries
+            Trending
           </Link>
           <Link to="/" className="hover:underline text-lg">
             Contact Us

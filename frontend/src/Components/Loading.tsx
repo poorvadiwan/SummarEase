@@ -6,19 +6,12 @@ interface LoaderProps {
 }
 
 const Loader: React.FC<LoaderProps> = ({
-  size = "50px",
-  color = "#000000",
+  size = "w-12",
+  color = "border-black",
 }) => {
   return (
     <div
-      style={{
-        width: size,
-        height: size,
-        border: `3px solid ${color}`,
-        borderTop: `3px solid transparent`,
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite",
-      }}
+      className={`w-${size} h-${size} ${color} border-solid border-b-0 rounded-full animate-spin`}
     />
   );
 };

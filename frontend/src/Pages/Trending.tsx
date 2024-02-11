@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllTrendies } from "../Data/SummaryData";
+import { getAllSummaries, getAllTrendies } from "../Data/SummaryData";
 import CardDialog from "../Components/CardDialog";
 import Loader from "../Components/Loading";
 import { Box, Card, Flex, Heading, Section, Text } from "@radix-ui/themes";
@@ -16,7 +16,7 @@ const Trending: React.FC = () => {
   };
 
   const fetchAllSummaries = () => {
-    getAllTrendies()
+    getAllSummaries()
       .then((res: any) => {
         setIsLoading(true);
         console.log(res.data);
@@ -46,7 +46,7 @@ const Trending: React.FC = () => {
         weight={"regular"}
         className="header-primary"
       >
-        Top 10 SummarEase
+        Trending
       </Heading>
 
       <CardDialog
@@ -75,12 +75,7 @@ const Trending: React.FC = () => {
               gap={"4"}
             >
               <Box className="bg-gray-200 flex items-center justify-center">
-                <video
-                  src={item?.video}
-                  height={"200px"}
-                  width={"400px"}
-                  className="h-[180px] w-[350px]"
-                />
+                <video src={item?.video} className="h-[180px] w-[350px]" />
               </Box>
               <Box className="flex align-center justify-center font-secondary">
                 <Text size={"5"}>{item?.name}</Text>
