@@ -9,9 +9,23 @@ import boto3
 import os
 from tempfile import NamedTemporaryFile
 import uuid
+from rest_framework.decorators import api_view
+from .vonage_call import send_sms
 
 
 NEURELO_KEY = os.environ.get('NEURELO_KEY')
+
+
+@api_view(['POST'])
+def sendSMS(request):
+    link = request.data['link']
+    response = send_sms(link)
+
+    if response == 0:
+        return Response({"message": "SMS sent successfully!!"}, status=200)
+    else:
+        return Response({"message": "SMS not sent!!"}, status=400)
+
 
 class SummarEaseView(APIView):
 
@@ -24,15 +38,6 @@ class SummarEaseView(APIView):
 
         response = requests.get(url, headers=headers)
         return Response(response.json())
-
-
-    # def post(self, request):
-    #     serializer = SummarEaseSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         pdf = request.FILES['document']
-    #         summary: list = video_gen(pdf)
-    #         summary = summary.join(' ')
-    #     return Response(serializer.errors, status=400)
 
 
     def post(self, request):
