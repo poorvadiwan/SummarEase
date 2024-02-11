@@ -45,7 +45,7 @@ export async function sendPDF(pdf: File): Promise<Response> {
       });
 
       if (response.ok) {
-          return response;
+          return response.json();
       } else {
           console.error('Failed to process file:', response.status, response.statusText);
           throw new Error(`Failed to process file: ${response.status} ${response.statusText}`);

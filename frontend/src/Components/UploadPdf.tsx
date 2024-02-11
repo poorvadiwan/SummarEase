@@ -1,12 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Flex, Heading, Box, Button, Text } from "@radix-ui/themes";
 import { useDropzone } from "react-dropzone";
-import { sendWMessage } from "../Data/Message";
 import { sendPDF } from "../Data/SummaryData";
+// import { sendSMS } from "../Data/Message";
+
+
+const dummy = {
+  "document": "https://summar-ease.s3.amazonaws.com/documents/978-3-031-53302-0-1.pdf",
+  "id": "65c808a876b052d8a39eb347",
+  "name": "978-3-031-53302-0-1.pdf",
+  "summary": "The Internet of Multisensory, Multimedia and Musical Things (Io3MT) is a new concept that groups in a single place devices and data exploring the five human senses, multimedia aspects, and music content. In this paper, we advance the proposition of a theoretical alignment between the emerging domain of Io3MT and the field of Artiﬁcial Intelligence (AI). Our comprehensive analysis spans a spectrum of dimensions, encompassing the automated generation of multimedia content, the real-time extraction of sensory effects, and post-performance analytical strategies. We assert that this cooperative amalgamation has the potential to serve as a conduit for optimizing the creative capabilities of stakeholders. We hope that this study will spark further research on the subject.. The Internet of Multisensory, Multimedia, and Musical Things (Io3MT) is an emerging domain of research that focuses on the seamless interaction and exchange of multisensory, multimedia, and musical data between interconnected devices. The aim is to promote the automation and realization of various services, including artistic endeavors, entertainment applications, and educational and therapeutic contexts. This work explores the application of artificial intelligence (AI) techniques within the Io3MT environment to enhance the creative process. It highlights the inherent challenges and proposes future research directions. A layered architecture is proposed, comprising five distinct levels: the Things Layer, Link Layer, Network Layer, Middleware Layer, and Application Layer. Each layer is equipped with specific AI techniques to achieve its functional objectives. By adopting AI techniques, the Io3MT environment can become more intelligent, responsive, and interactive, leading to new artistic applications and experiences.",
+  "video": "https://summar-ease.s3.amazonaws.com/videos/ee5564c3-201b-46b7-b7d4-3c4d36ce3ec6.mp4"
+}
 
 const UploadPdf = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [pdfResult, setPdfResult] = useState<any>(null)
+  const [pdfResult, setPdfResult] = useState<any>(dummy)
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setSelectedFiles(acceptedFiles);
@@ -26,9 +35,12 @@ const UploadPdf = () => {
     // OPEN DIALOG FOR EMAIL ENTRY
     // CALL VONAGE TO SEND MAIL
     console.log(selectedFiles);
-    sendPDF(selectedFiles[0]).then((res)=>setPdfResult(res)).catch((err)=> console.log(err))
-    // sendWMessage();
+    // costly api call
+    // sendPDF(selectedFiles[0]).then((res: any)=>setPdfResult(res?.data)).catch((err)=> console.log(err))
+    // sendSMS().then(res=> console.log(res)).catch(err => console.log(err));
+    // sendSMS();
   };
+
 
   const files = selectedFiles.map((file: any) => (
     <li key={file?.path} className="font-bold text-xl">
