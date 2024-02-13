@@ -54,6 +54,7 @@ const UploadPdf = () => {
       })
       .catch((err) => console.log(err));
     setEnterNumberDialog(true);
+    setSelectedFiles([]);
   };
 
   const files = selectedFiles.map((file: any) => (
@@ -94,6 +95,7 @@ const UploadPdf = () => {
               <TextField.Input
                 defaultValue="7987746758"
                 value={mobNumber}
+                onChange={(e) => setModNumber(e.target.value)}
                 placeholder="Enter your mobile number"
               />
             </label>
@@ -170,6 +172,7 @@ const UploadPdf = () => {
           </Box>
         </label>
       </Box>
+
       <Box className="self-center flex flex-row gap-4 mt-4">
         {selectedFiles.length > 0 ? (
           <>
