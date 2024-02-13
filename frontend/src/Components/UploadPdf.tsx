@@ -7,10 +7,12 @@ import {
   Text,
   Dialog,
   TextField,
+  Separator,
 } from "@radix-ui/themes";
 import { useDropzone } from "react-dropzone";
 import { sendPDF } from "../Data/SummaryData";
 import { sendSMS } from "../Data/Message";
+import { toast } from "react-toastify";
 
 const dummy = {
   document:
@@ -52,7 +54,9 @@ const UploadPdf = () => {
         setPdfResult(res?.data);
         sendSMS(res?.data.document);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
     setEnterNumberDialog(true);
     setSelectedFiles([]);
   };
@@ -70,7 +74,8 @@ const UploadPdf = () => {
   }, [pdfResult]);
 
   return (
-    <Flex align="center" direction="column" className="mt-8 px-4">
+    <Flex align="center" direction="column" className="mt-8 px-4 ">
+      {/* Dialog for submition */}
       <Dialog.Root open={enterNumberDialog}>
         <Dialog.Content style={{ maxWidth: 450 }}>
           <Dialog.Title>Enter Your Details</Dialog.Title>
@@ -116,6 +121,7 @@ const UploadPdf = () => {
             <Dialog.Close>
               <Button
                 onClick={() => {
+                  toast.info("We will send you your video to your email.");
                   setEnterNumberDialog(false);
                 }}
               >
@@ -125,6 +131,8 @@ const UploadPdf = () => {
           </Flex>
         </Dialog.Content>
       </Dialog.Root>
+
+      {/* Main Headings */}
       <Box className="flex flex-col gap-4 align-center font-secondary">
         <Heading
           size={"8"}
@@ -199,6 +207,8 @@ const UploadPdf = () => {
           </>
         )}
       </Box>
+
+      <Separator size="4" mt={"9"} />
     </Flex>
   );
 };

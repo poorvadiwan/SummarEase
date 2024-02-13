@@ -1,0 +1,77 @@
+      <Flex direction={"column"} gap={"6"}>
+        <Heading
+          align={"center"}
+          size={"7"}
+          weight={"regular"}
+          className="header-primary"
+        >
+          Latest from SummarEase
+        </Heading>
+
+        <Flex direction={"row"} gap={"0"}>
+          <IconButton
+            variant="solid"
+            className="bg-white p-2 shadow-md"
+            onClick={goToPreviousSlide}
+            radius="full"
+          >
+            <CaretLeftIcon className="w-6 h-6" />
+          </IconButton>
+
+          <Container className="carousel-container px-12">
+            <div
+              ref={containerRef}
+              className="carousel-wrapper flex flex-row gap-4 overflow-x-scroll hidescrollbar"
+            >
+              {isLoading ? (
+                <Box className="flex w-full justify-center">
+                  <Loader />
+                </Box>
+              ) : (
+                summaries.map((item: any, index: number) => (
+                  <Card
+                    size="2"
+                    style={{ maxWidth: 240 }}
+                    variant="classic"
+                    color="crimson"
+                    key={index}
+                    className="carousel-slide cursor-pointer shadow-lg !p-0"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleCardClick(index);
+                    }}
+                  >
+                    <Inset clip="padding-box" side="top" pb="current">
+                      <Box className="bg-gray-200 flex items-center justify-center !p-0">
+                        <video
+                          src={item?.video}
+                          height={"200px"}
+                          width={"400px"}
+                          className="h-[180px] w-[350px]"
+                        />
+                      </Box>
+                    </Inset>
+                    <Text
+                      as="p"
+                      size="5"
+                      className="font-primary text-center font-medium"
+                    >
+                      {item?.name}
+                    </Text>
+                  </Card>
+                ))
+              )}
+            </div>
+          </Container>
+
+          {/* Next button */}
+          <IconButton
+            variant="solid"
+            className=" bg-white rounded-full p-2 shadow-md"
+            onClick={goToNextSlide}
+            radius="full"
+          >
+            <CaretRightIcon className="w-6 h-6" />
+          </IconButton>
+        </Flex>
+      </Flex>

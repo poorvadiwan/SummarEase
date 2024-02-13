@@ -67,6 +67,16 @@ body {
   transform: translateY(-50%);
 }
 
+.images_crousel_wrapper {
+  width: 100%;
+  padding: 0px 16px !important;
+}
+.slider {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
 .hidescrollbar {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */

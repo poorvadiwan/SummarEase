@@ -1,5 +1,13 @@
 import { Cross1Icon } from "@radix-ui/react-icons";
-import { Box, Dialog, Flex, Grid, IconButton, Text } from "@radix-ui/themes";
+import {
+  Box,
+  Dialog,
+  Flex,
+  Grid,
+  IconButton,
+  ScrollArea,
+  Text,
+} from "@radix-ui/themes";
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
 import PdfViewer from "./PdfViewer";
@@ -29,7 +37,7 @@ const CardDialog: React.FC<CardDialogProps> = ({
         }}
       >
         <Grid columns={"2"} style={{ overflow: "hidden" }}>
-          <Box style={{ overflowY: "auto" }}>
+          <Box>
             <Dialog.Title
               className="flex flex-row justify-between bg-primary px-4 py-3 gap-4"
               style={{ margin: "0 !important" }}
@@ -45,11 +53,7 @@ const CardDialog: React.FC<CardDialogProps> = ({
                 <Cross1Icon color="black" fontWeight={"5"} />
               </IconButton>
             </Dialog.Title>
-            <Dialog.Description
-              size="2"
-              mb="5"
-              style={{ overflowY: "auto", height: "700px" }}
-            >
+            <Dialog.Description size="2" mb="5" style={{ height: "700px" }}>
               <Flex direction={"column"} gap={"5"} style={{ height: "100%" }}>
                 <Box style={{ height: "50%" }}>
                   <ReactPlayer
@@ -59,14 +63,11 @@ const CardDialog: React.FC<CardDialogProps> = ({
                     controls={true}
                   />
                 </Box>
-                <Text
-                  size={"3"}
-                  align={"center"}
-                  className="px-4 overflow-y-auto"
-                  style={{ height: "50%" }}
-                >
-                  {summaries[activeCard]?.summary}
-                </Text>
+                <ScrollArea className="px-4 pb-8">
+                  <Text size={"3"} align={"center"} style={{ height: "50%" }}>
+                    {summaries[activeCard]?.summary}
+                  </Text>
+                </ScrollArea>
               </Flex>
             </Dialog.Description>
           </Box>

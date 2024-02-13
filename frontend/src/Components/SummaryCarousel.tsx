@@ -16,13 +16,13 @@ import {
   Container,
   Text,
   Card,
+  Inset,
+  Heading,
   Flex,
-  Dialog,
-  Button,
-  Grid,
 } from "@radix-ui/themes";
 import CardDialog from "./CardDialog";
 import Loader from "./Loading";
+import Slider from "react-slick";
 
 // interface SlideItem {
 //   name: string;
@@ -36,6 +36,35 @@ const CustomSlider: React.FC = () => {
   const [summaries, setSummaries] = useState<any>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeCardPopup, setActiveCardPopup] = useState<boolean>(false);
+
+  let settings = {
+    className: "slider variable-width slick-slider-container",
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    centerMode: false,
+    arrows: true,
+    nextArrow: (
+      <IconButton
+        variant="solid"
+        className=" bg-white rounded-full p-2 shadow-md"
+        radius="full"
+      >
+        <CaretRightIcon className="w-6 h-6" />
+      </IconButton>
+    ),
+    prevArrow: (
+      <IconButton
+        variant="solid"
+        className=" bg-white rounded-full p-2 shadow-md"
+        radius="full"
+      >
+        <CaretRightIcon className="w-6 h-6" />
+      </IconButton>
+    ),
+  };
 
   const handleCardClick = (index: number) => {
     setActiveCard(index);
@@ -77,7 +106,7 @@ const CustomSlider: React.FC = () => {
   };
 
   return (
-    <Section className=" overflow-hidden border-t-2 !py-12 " mt={"7"}>
+    <Section className="overflow-hidden !py-12 ">
       {/* Dialog for Video */}
       <CardDialog
         summaries={summaries}
@@ -85,74 +114,41 @@ const CustomSlider: React.FC = () => {
         activeCardPopup={activeCardPopup}
         handleActiveCardPopup={(arg: boolean) => setActiveCardPopup(arg)}
       />
-
-      <Box className="relative">
-        {/* Carousel */}
-        <IconButton
-          variant="solid"
-          className="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 bg-white p-2 shadow-md"
-          onClick={goToPreviousSlide}
-          radius="full"
-        >
-          <CaretLeftIcon className="w-6 h-6" />
-        </IconButton>
-
-        {/* Slides */}
-        <Container className="carousel-container px-8">
-          <div
-            ref={containerRef}
-            className="carousel-wrapper flex flex-row gap-4 overflow-x-scroll hidescrollbar"
-          >
-            {isLoading ? (
-              <Box className="flex w-full justify-center">
-                <Loader />
-              </Box>
-            ) : (
-              summaries.map((item: any, index: number) => (
-                <Card
-                  variant="classic"
-                  color="crimson"
-                  key={index}
-                  className="carousel-slide cursor-pointer h-[300px] shadow-lg"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleCardClick(index);
-                  }}
-                >
-                  <Flex
-                    direction={"column"}
-                    align={"center"}
-                    justify={"center"}
-                    gap={"4"}
-                  >
-                    {/* Video Container */}
-                    <Box className="bg-gray-200 flex items-center justify-center">
-                      <video
-                        src={item?.video}
-                        height={"200px"}
-                        width={"400px"}
-                        className="h-[180px] w-[350px]"
-                      />
-                    </Box>
-                    <Box className="flex align-center justify-center font-secondary">
-                      <Text size={"5"}>{item?.name}</Text>
-                    </Box>
-                  </Flex>
-                </Card>
-              ))
-            )}
-          </div>
-        </Container>
-
-        {/* Next button */}
-        <IconButton
-          variant="solid"
-          className="absolute top-1/2 right-0 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md"
-          onClick={goToNextSlide}
-          radius="full"
-        >
-          <CaretRightIcon className="w-6 h-6" />
-        </IconButton>
+      <Box className="slider-container">
+        <Slider {...settings}>
+          {summaries.map((item: any, index: number) => (
+            <Card
+              size="2"
+              style={{ maxWidth: 240 }}
+              variant="classic"
+              color="crimson"
+              key={index}
+              className="carousel-slide cursor-pointer shadow-lg !p-0"
+              onClick={(e) => {
+                e.preventDefault();
+                handleCardClick(index);
+              }}
+            >
+              <Inset clip="padding-box" side="top" pb="current">
+                <Box className="bg-gray-200 flex items-center justify-center !p-0">
+                  <video
+                    src={item?.video}
+                    height={"200px"}
+                    width={"400px"}
+                    className="h-[180px] w-[350px]"
+                  />
+                </Box>
+              </Inset>
+              <Text
+                as="p"
+                size="5"
+                className="font-primary text-center font-medium"
+              >
+                {item?.name}
+              </Text>
+            </Card>
+          ))}
+        </Slider>
       </Box>
     </Section>
   );

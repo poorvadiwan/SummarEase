@@ -20,9 +20,9 @@ const Navbar: React.FC = () => {
           <Link to="/" className="hover:underline text-lg">
             Home
           </Link>
-          <Link to="/trends" className="hover:underline text-lg">
+          {/* <Link to="/trends" className="hover:underline text-lg">
             Trending
-          </Link>
+          </Link> */}
           <Link to="/" className="hover:underline text-lg">
             Contact Us
           </Link>
