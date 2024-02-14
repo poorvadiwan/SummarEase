@@ -74,7 +74,7 @@ body {
 .slider {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 20px !important;
 }
 
 .hidescrollbar {
@@ -84,4 +84,14 @@ body {
 
 .hidescrollbar::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
+}
+
+.video-element {
+  object-fit: cover;
+  overflow-clip-margin: content-box;
+  overflow: clip;
+}
+
+.video-element:hover {
+  pointer-events: none;
 }

@@ -2,77 +2,32 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   CaretLeftIcon,
   CaretRightIcon,
+  ChevronRightIcon,
   Cross1Icon,
+  HeartIcon,
+  ReaderIcon,
 } from "@radix-ui/react-icons";
 import ReactPlayer from "react-player";
-// import AWS from "aws-sdk";
 import { getAllSummaries } from "../Data/SummaryData";
-import PdfViewer from "./PdfViewer"; // Assuming PDFViewer is properly exported from PdfViewer file
-
-import {
-  Box,
-  IconButton,
-  Section,
-  Container,
-  Text,
-  Card,
-  Inset,
-  Heading,
-  Flex,
-} from "@radix-ui/themes";
-import CardDialog from "./CardDialog";
-import Loader from "./Loading";
+import { Box, IconButton, Section, Text, Flex, Button } from "@radix-ui/themes";
 import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import CardDialog from "./CardDialog";
 
 const CustomSlider: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [activeCard, setActiveCard] = useState<number>(0);
   const [summaries, setSummaries] = useState<any>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [activeCardPopup, setActiveCardPopup] = useState<boolean>(false);
+  const [activeCard, setActiveCard] = useState<number>(0);
+  const [updateCount, setUpdateCount] = useState(0);
 
-  let settings = {
-    className: "slider variable-width slick-slider-container",
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    centerMode: false,
-    arrows: true,
-    nextArrow: (
-      <IconButton
-        variant="solid"
-        className=" bg-white rounded-full p-2 shadow-md"
-        radius="full"
-      >
-        <CaretRightIcon className="w-6 h-6" />
-      </IconButton>
-    ),
-    prevArrow: (
-      <IconButton
-        variant="solid"
-        className=" bg-white rounded-full p-2 shadow-md"
-        radius="full"
-      >
-        <CaretRightIcon className="w-6 h-6" />
-      </IconButton>
-    ),
-  };
-
-  const handleCardClick = (index: number) => {
-    setActiveCard(index);
-    setActiveCardPopup(true);
-  };
+  let sliderRef = useRef(null);
+  const [slideIndex, setSlideIndex] = useState(0);
 
   const fetchAllSummaries = () => {
     getAllSummaries()
       .then((res: any) => {
-        setIsLoading(true);
-        console.log(res.data);
         setSummaries(res?.data);
-        setIsLoading(false);
       })
       .catch((err) => console.log(err));
   };
@@ -81,69 +36,125 @@ const CustomSlider: React.FC = () => {
     fetchAllSummaries();
   }, []);
 
-  const goToPreviousSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? 0 : prevIndex - 1));
-    scrollSlider(-1);
-  };
+  let settings = {
+    // className: "slider variable-width slick-slider-container",
+    // dots: true,
+    infinite: true,
+    autoplay: true,
+    speed: 500,
+    swipeToSlide: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    centerMode: true,
+    arrows: false,
+    afterChange: () => setUpdateCount(updateCount + 1),
+    beforeChange: (current: any, next: any) => setSlideIndex(next),
 
-  const goToNextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === summaries.length - 1 ? summaries.length - 1 : prevIndex + 1
-    );
-    scrollSlider(1);
-  };
-
-  const scrollSlider = (direction: number) => {
-    if (containerRef.current) {
-      const scrollAmount = direction * containerRef.current.offsetWidth;
-      containerRef.current.scrollLeft += scrollAmount;
-    }
+    // nextArrow: <Button className="text-red">Click</Button>,
+    // prevArrow: (
+    // <IconButton
+    //   variant="solid"
+    //   className=" bg-white rounded-full p-2 shadow-md"
+    //   radius="full"
+    // >
+    //   <CaretRightIcon className="w-6 h-6" />
+    // </IconButton>
+    // ),
   };
 
   return (
-    <Section className="overflow-hidden !py-12 ">
-      {/* Dialog for Video */}
-      <CardDialog
-        summaries={summaries}
-        activeCard={activeCard}
-        activeCardPopup={activeCardPopup}
-        handleActiveCardPopup={(arg: boolean) => setActiveCardPopup(arg)}
-      />
-      <Box className="slider-container">
-        <Slider {...settings}>
+    <Section className="overflow-hidden !p-0 w-screen">
+      <Box className="relative w-100 align-center justify-center">
+        <CardDialog
+          summaries={summaries}
+          activeCard={activeCard}
+          activeCardPopup={activeCardPopup}
+          handleActiveCardPopup={(arg: boolean) => setActiveCardPopup(arg)}
+        />
+        <IconButton
+          variant="solid"
+          size={"4"}
+          className="absolute top-1/2 -translate-y-1/2 left-0 z-20 bg-white rounded-full p-2 shadow-md !cursor-pointer"
+          radius="full"
+          onClick={() => {
+            console.log(sliderRef);
+            if (sliderRef.current) {
+              (sliderRef.current as any)?.slickPrev();
+            }
+          }}
+        >
+          <CaretLeftIcon width={45} height={45} />
+        </IconButton>
+        <Slider {...settings} ref={sliderRef} className="w-screen mx-auto">
           {summaries.map((item: any, index: number) => (
-            <Card
-              size="2"
-              style={{ maxWidth: 240 }}
-              variant="classic"
-              color="crimson"
-              key={index}
-              className="carousel-slide cursor-pointer shadow-lg !p-0"
-              onClick={(e) => {
-                e.preventDefault();
-                handleCardClick(index);
-              }}
-            >
-              <Inset clip="padding-box" side="top" pb="current">
-                <Box className="bg-gray-200 flex items-center justify-center !p-0">
-                  <video
-                    src={item?.video}
-                    height={"200px"}
-                    width={"400px"}
-                    className="h-[180px] w-[350px]"
-                  />
-                </Box>
-              </Inset>
-              <Text
-                as="p"
-                size="5"
-                className="font-primary text-center font-medium"
+            <Box key={index} className="relative">
+              <video
+                className="h-[400px] video-element w-full bg-black border-2"
+                muted
+                autoPlay={false}
+                loop
+                playsInline
               >
-                {item?.name}
-              </Text>
-            </Card>
+                <source src={item?.video} type="video/mp4" />
+              </video>
+              <Flex
+                direction="column"
+                justify="between"
+                className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
+              >
+                <Flex p="4" justify="end">
+                  <IconButton
+                    variant="soft"
+                    className="text-white !cursor-pointer"
+                    aria-label="Like"
+                    size={"3"}
+                  >
+                    <HeartIcon color="white" width="25" height="25" />
+                  </IconButton>
+                </Flex>
+                <Flex
+                  direction={"row"}
+                  justify={"between"}
+                  align={"center"}
+                  px={"4"}
+                  py={"5"}
+                >
+                  <Text className="text-white text-xl">{item.name}</Text>
+                  <Flex justify="between">
+                    <Button
+                      variant="solid"
+                      size={"3"}
+                      style={{ borderRadius: "20px" }}
+                      className="text-white !text-lg !cursor-pointer"
+                      aria-label="View More Details"
+                      onClick={() => {
+                        setActiveCard(index);
+                        setActiveCardPopup(true);
+                      }}
+                    >
+                      <ReaderIcon width={"20"} height={"20"} />
+                      View Details
+                    </Button>
+                  </Flex>
+                </Flex>
+              </Flex>
+            </Box>
           ))}
         </Slider>
+        <IconButton
+          variant="solid"
+          size={"4"}
+          className="absolute top-1/2 -translate-y-1/2 right-0 z-20 bg-white rounded-full shadow-md !cursor-pointer"
+          radius="full"
+          onClick={() => {
+            console.log(sliderRef);
+            if (sliderRef.current) {
+              (sliderRef.current as any)?.slickNext();
+            }
+          }}
+        >
+          <CaretRightIcon width={45} height={45} />
+        </IconButton>
       </Box>
     </Section>
   );

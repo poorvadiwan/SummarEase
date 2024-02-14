@@ -7,8 +7,8 @@ const Home: React.FC = () => {
   return (
     <Flex
       direction={"column"}
-      justify={"between"}
-      className="w-5/6 mx-auto h-[90vh]"
+      // justify={"between"}
+      className="mx-auto h-[90vh]"
     >
       <UploadPdf />
       <SummaryCarousel />
