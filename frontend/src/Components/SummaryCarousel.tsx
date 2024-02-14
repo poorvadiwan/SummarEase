@@ -24,11 +24,6 @@ import CardDialog from "./CardDialog";
 import Loader from "./Loading";
 import Slider from "react-slick";
 
-// interface SlideItem {
-//   name: string;
-//   url: string;
-// }
-
 const CustomSlider: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
