@@ -1,17 +1,17 @@
 import React from "react";
-import UploadPdf from "../Components/UploadPdf";
-import SummaryCarousel from "../Components/SummaryCarousel";
 import { Flex } from "@radix-ui/themes";
+import SummaryGrid from "../Components/SummaryGrid";
 
 const Home: React.FC = () => {
   return (
     <Flex
       direction={"column"}
       // justify={"between"}
-      className="mx-auto h-[90vh]"
+      className="mx-auto"
     >
-      <UploadPdf />
-      <SummaryCarousel />
+      {/* <UploadPdf /> */}
+      <SummaryGrid />
+      {/* <SummaryCarousel /> */}
     </Flex>
   );
 };

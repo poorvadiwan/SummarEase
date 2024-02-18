@@ -7,7 +7,6 @@ import {
   HeartIcon,
   ReaderIcon,
 } from "@radix-ui/react-icons";
-import ReactPlayer from "react-player";
 import { getAllSummaries } from "../Data/SummaryData";
 import { Box, IconButton, Section, Text, Flex, Button } from "@radix-ui/themes";
 import Slider from "react-slick";
@@ -89,7 +88,7 @@ const CustomSlider: React.FC = () => {
           {summaries.map((item: any, index: number) => (
             <Box key={index} className="relative">
               <video
-                className="h-[400px] video-element w-full bg-black border-2"
+                className="h-[300px] video-element w-full bg-black border-2"
                 muted
                 autoPlay={false}
                 loop

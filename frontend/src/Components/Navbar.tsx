@@ -1,11 +1,30 @@
 import React from "react";
 import { Container, Box, Flex, Heading } from "@radix-ui/themes";
 import { Link } from "react-router-dom";
+import UploadPdf from "./UploadPdf";
 
 const Navbar: React.FC = () => {
   return (
-    <Container id="navbar" className="bg-primary text-white px-8">
-      <Flex justify="between" align="center" py="4">
+    <Box id="navbar" className="relative text-white w-screen !px-8 !m-0">
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="bg_video.mp4" type="video/mp4" />
+      </video>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black opacity-50" />
+
+      <Flex
+        justify="between"
+        align="center"
+        py="4"
+        className="relative z-10 w-5/6 mx-auto"
+      >
         <Box id="logo">
           <Heading
             size={"7"}
@@ -28,7 +47,10 @@ const Navbar: React.FC = () => {
           </Link>
         </Box>
       </Flex>
-    </Container>
+      <Box className="relative z-10">
+        <UploadPdf />
+      </Box>
+    </Box>
   );
 };
 

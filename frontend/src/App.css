@@ -95,3 +95,10 @@ body {
 .video-element:hover {
   pointer-events: none;
 }
+
+/* .bg-navbar {
+  background: url("../assets/bg_video.mp4");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+} */

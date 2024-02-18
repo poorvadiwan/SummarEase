@@ -62,8 +62,10 @@ const UploadPdf = () => {
   };
 
   const files = selectedFiles.map((file: any) => (
-    <li key={file?.path} className="font-bold text-xl">
-      {file?.path}
+    <li key={file?.name}>
+      <Text size={"6"} weight={"regular"}>
+        <i>{file?.name}</i>
+      </Text>
     </li>
   ));
 
@@ -74,7 +76,11 @@ const UploadPdf = () => {
   }, [pdfResult]);
 
   return (
-    <Flex align="center" direction="column" className="mt-8 px-4 ">
+    <Flex
+      align="center"
+      direction="column"
+      className="pt-2 pb-16 px-4 text-white"
+    >
       {/* Dialog for submition */}
       <Dialog.Root open={enterNumberDialog}>
         <Dialog.Content style={{ maxWidth: 450 }}>
@@ -151,64 +157,66 @@ const UploadPdf = () => {
           Understand your documents better and in style
         </Heading>
       </Box>
-      <Box className="flex flex-col gap-0 align-center justify-center p-4 border-2 border-gray-600 border-dashed w-[60vw] mt-8 rounded-xl">
-        {/* DROPZONE */}
-        <label
-          htmlFor="fileInput"
-          className="flex flex-col gap-8 h-44 cursor-pointer"
-          {...getRootProps()}
-        >
-          <Box className="h-full w-full flex align-center justify-center">
-            <input {...getInputProps()} />
-            {selectedFiles.length > 0 ? (
-              <Flex align={"center"} justify={"center"} gap="2">
-                <img src="/pdf.png" alt="PDF" className="h-12 w-12" />
-                <ul>{files}</ul>
-              </Flex>
-            ) : isDragActive ? (
-              <Flex align={"center"} justify={"center"}></Flex>
-            ) : (
-              <Flex align={"center"} justify={"center"} direction={"column"}>
-                <img
-                  src={"/upload.png"}
-                  className="h-24 w-24"
-                  alt="Drop your pdfs here..."
-                />
-                <Text>Drag and Drop Pdfs Here</Text>
-              </Flex>
-            )}
-          </Box>
-        </label>
+      <Box className="flex flex-col mt-8 border-2 border-gray-200 border-dashed w-[60vw] rounded-xl ">
+        <Box className="flex flex-col gap-0 align-center justify-center">
+          {/* DROPZONE */}
+          <label
+            htmlFor="fileInput"
+            className="flex flex-col gap-8 h-44 cursor-pointer"
+            {...getRootProps()}
+          >
+            <Box className="h-full w-full flex align-center justify-center">
+              <input {...getInputProps()} />
+              {selectedFiles.length > 0 ? (
+                <Flex align={"center"} justify={"center"} direction={"column"}>
+                  <Flex align={"center"} justify={"center"} gap="2">
+                    <img src="/pdf.png" alt="PDF" className="h-12 w-12" />
+                    <ul>{files}</ul>
+                  </Flex>
+                </Flex>
+              ) : isDragActive ? (
+                <Flex align={"center"} justify={"center"}></Flex>
+              ) : (
+                <Flex align={"center"} justify={"center"} direction={"column"}>
+                  <img
+                    src={"/upload.png"}
+                    className="h-24 w-24"
+                    alt="Drop your pdfs here..."
+                  />
+                  <Text>Drag and Drop Pdfs Here</Text>
+                </Flex>
+              )}
+            </Box>
+          </label>
+        </Box>
+
+        <Box className="self-center flex flex-row gap-4 pb-6">
+          {selectedFiles.length > 0 ? (
+            <>
+              <Button variant="solid" size={"4"} onClick={handleSubmit}>
+                <Text size={"5"}>Submit</Text>
+              </Button>
+
+              <Button
+                variant="solid"
+                size={"4"}
+                color="crimson"
+                onClick={() => {
+                  setSelectedFiles([]);
+                }}
+              >
+                <Text size={"5"}>Cancel</Text>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="solid" size={"4"} onClick={open}>
+                <Text size={"5"}>Select File</Text>
+              </Button>
+            </>
+          )}
+        </Box>
       </Box>
-
-      <Box className="self-center flex flex-row gap-4 mt-4">
-        {selectedFiles.length > 0 ? (
-          <>
-            <Button variant="solid" size={"4"} onClick={handleSubmit}>
-              Submit
-            </Button>
-
-            <Button
-              variant="outline"
-              size={"4"}
-              color="crimson"
-              onClick={() => {
-                setSelectedFiles([]);
-              }}
-            >
-              Cancel
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button variant="solid" size={"4"} onClick={open}>
-              Select File
-            </Button>
-          </>
-        )}
-      </Box>
-
-      <Separator size="4" mt={"9"} />
     </Flex>
   );
 };
