@@ -95,23 +95,10 @@ def create_video(output_file, img):
 
 
 def create_video_from_image_sentence(sentence, keyword, output_file):
-    if not os.path.exists('files'):
-        os.mkdir('files')
-
-    os.chdir('files')
-
     audio_file = 'test.mp3'
-    # video_file = output_file + ".mp4"
-
-    # # google_crawler = GoogleImageCrawler(storage={'root_dir': './'})
-    # # google_crawler.crawl(keyword=keyword, max_num=1)
-
 
     download_image_from_keyword(keyword),
     create_audio_from_sentence(sentence, audio_file)
-
-    # tts = TextToSpeech(rate=165, volume=1.0)
-    # tts.speak(text=sentence, save=True, file_name=audio_file)
 
     try:
         img = [f for f in os.listdir('./') if f.endswith(('.jpg', '.png', '.jpeg'))][0]
@@ -126,20 +113,13 @@ def create_video_from_image_sentence(sentence, keyword, output_file):
     sleep(2)
     os.rename(audio_file, audio_file.replace('test', output_file))
 
-    # audio = editor.AudioFileClip(output_file + ".mp3")
-    # video = editor.ImageClip(img).set_duration(audio.duration).set_audio(audio)
-    # video.write_videofile(video_file, fps=24)
-
     create_video(output_file, img)
 
     os.remove(img)
     os.remove(output_file + ".mp3")
-    os.chdir('..')
 
 
 def concatenate_videos(video_files: list, output_file: str):
-    os.chdir('files')
-
     video_clips = [editor.VideoFileClip(video_file) for video_file in video_files]
 
     final_video = editor.concatenate_videoclips(video_clips, method="compose")
@@ -166,10 +146,8 @@ def extract_text_from_pdf(pdf):
 
 
 def video_gen(pdf_file_path: str, id: str):
-    # output folder path
     final_videos = []
     final_summary = []
-
 
     extracted_text =  extract_text_from_pdf(pdf_file_path)
 
@@ -209,7 +187,7 @@ def video_gen(pdf_file_path: str, id: str):
             extracted_keywords = extracted_keywords.text
             extracted_keywords = extracted_keywords[1:-1]
             extracted_keywords = json.loads(extracted_keywords)
-            extracted_keywords = extracted_keywords.get("generated_text").split(", ")
+            extracted_keywords = extracted_keywords.get("summary_text").split(", ")
 
             print(extracted_keywords)
 
@@ -230,7 +208,6 @@ def video_gen(pdf_file_path: str, id: str):
 
         for file in video_files:
             os.remove(file)
-        os.chdir('..')
 
     concatenate_videos(final_videos, id + ".mp4")
     for file in final_videos:

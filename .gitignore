@@ -2,7 +2,9 @@ node_modules
 .env
 backend/.env
 backend/backend/__pycache__
-backend/backend/migrations
+backend/summar_ease/migrations/*
 backend/summar_ease/__pycache__
 nvenv
 venv
+backend/output
+backend/files
