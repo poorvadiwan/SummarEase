@@ -5,11 +5,11 @@ from .serializers import SummarEaseSerializer
 from .logic import video_gen
 from .models import SummarEase
 from django.conf import settings
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from rest_framework.generics import GenericAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, DestroyModelMixin
 from PyPDF2 import PdfReader
 from moviepy.editor import VideoFileClip
 
@@ -37,8 +37,6 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
 
     def post(self, request):
         serializer = SummarEaseSerializer(data=request.data)
-        # self.upload_video_to_s3('/home/shashwat/Django/Summar-E/SummarEase/backend/files/3845bb29-3d93-4d4d-b0da-a83ff6ac41f4/3845bb29-3d93-4d4d-b0da-a83ff6ac41f4.mp4')
-        # exit()
 
         if serializer.is_valid():
             uploaded_document = serializer.validated_data.pop('document')
@@ -48,6 +46,7 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
 
             # Creating the 'files' folder if not exists
             if not os.path.exists(file_path):
+                print('Creating the files folder!!')
                 os.mkdir(file_path)
 
             destination_path = os.path.join(file_path, str(id))
@@ -86,3 +85,33 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
             return Response(data={'message': serializer.data}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=400)
+
+
+class SummarEaseDetailView(APIView):
+    def delete(self, request, id):
+        try:
+            summar_ease = SummarEase.objects.get(id=id)
+            s3_client = boto3.client('s3')
+            print(summar_ease.video.url[summar_ease.video.url.index('videos'):])
+
+            response = s3_client.delete_objects(
+            Bucket='summar-ease',
+            Delete={
+                'Objects': [
+                    {
+                        'Key': summar_ease.video.url[summar_ease.video.url.index('videos'):],
+                    },
+                    {
+                        'Key': summar_ease.document.url[summar_ease.document.url.index('documents'):],
+                    }
+                ],
+            },
+            ExpectedBucketOwner='954830862269',
+            )
+            print(response)
+            exit()
+            summar_ease.delete()
+
+            return Response(data={'message': 'Data deleted!!'}, status=status.HTTP_204_NO_CONTENT)
+        except SummarEase.DoesNotExist:
+            return Response(data={'message': 'Data not found!!'}, status=status.HTTP_404_NOT_FOUND)

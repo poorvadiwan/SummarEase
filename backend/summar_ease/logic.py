@@ -1,20 +1,14 @@
 from tempfile import NamedTemporaryFile
 from time import sleep
 from PyPDF2 import PdfReader
+from icrawler.builtin import GoogleImageCrawler
+from langchain.text_splitter import NLTKTextSplitter
 import requests
 import json
 import os
-from icrawler.builtin import GoogleImageCrawler
-from mutagen.mp3 import MP3
-from PIL import Image
-from pathlib import Path
 import os
-import imageio
 import moviepy.editor as editor
 import pyttsx3
-from pydub import AudioSegment
-from gtts import gTTS
-from langchain.text_splitter import NLTKTextSplitter
 
 
 class TextToSpeech:
@@ -35,7 +29,9 @@ class TextToSpeech:
         self.engine.save_to_file(text=text, filename=file_name)
         self.engine.runAndWait()
 
+
 def summarize(text):
+    print("Text summarization started!!")
     url = "https://api.cohere.ai/v1/summarize"
 
     payload = json.dumps({
@@ -59,6 +55,7 @@ def summarize(text):
 
 
 def extract_keywords(sentence):
+    print("Keyword extraction started!!")
     url = "https://api-inference.huggingface.co/models/transformer3/H1-keywordextractor"
 
     payload = json.dumps({
@@ -73,8 +70,10 @@ def extract_keywords(sentence):
     response = requests.request("POST", url, headers=headers, data=payload)
 
     if 'error' in response.text:
+        print("Keyword extraction failed, trying again!!")
         response = extract_keywords(sentence)
 
+    print("Keywords extracted!!")
     return response
 
 
@@ -95,6 +94,7 @@ def create_video(output_file, img):
 
 
 def create_video_from_image_sentence(sentence, keyword, output_file):
+    print('Creating video from image and sentence!!')
     audio_file = 'test.mp3'
 
     download_image_from_keyword(keyword),
@@ -120,6 +120,7 @@ def create_video_from_image_sentence(sentence, keyword, output_file):
 
 
 def concatenate_videos(video_files: list, output_file: str):
+    print('Concatenating videos!!')
     video_clips = [editor.VideoFileClip(video_file) for video_file in video_files]
 
     final_video = editor.concatenate_videoclips(video_clips, method="compose")
@@ -136,6 +137,7 @@ def process_uploaded_pdf(uploaded_pdf):
 
 
 def extract_text_from_pdf(pdf):
+    print("Text Extraction started!!")
     with open(pdf, 'rb') as file:
         pdf_reader = PdfReader(file)
         text = ''
@@ -146,6 +148,7 @@ def extract_text_from_pdf(pdf):
 
 
 def video_gen(pdf_file_path: str, id: str):
+    print('Video generation started!!')
     final_videos = []
     final_summary = []
 
@@ -169,16 +172,8 @@ def video_gen(pdf_file_path: str, id: str):
         final_summary.append(summarized_text_summary)
         summary_sentences = summarized_text_summary.split('. ')
 
-        # print(summarized_text_id)
-        # print()
-        # print(summarized_text_summary)
-        # print()
-        # print(summary_sentences)
-
         video_files = []
         extracted_keywords = None
-
-        # summary_sentences = ['Phone is an electronic device, it"s portable.', 'In recent times, portable devices has been in trend loved by everyone.', 'It is used for communication, entertainment, and work.']
 
         for i, sentence in enumerate(summary_sentences):
             print(sentence)
@@ -209,6 +204,7 @@ def video_gen(pdf_file_path: str, id: str):
         for file in video_files:
             os.remove(file)
 
+    print('Concatenating final videos!!')
     concatenate_videos(final_videos, id + ".mp4")
     for file in final_videos:
         os.remove(file)
