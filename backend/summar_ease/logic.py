@@ -14,6 +14,7 @@ import moviepy.editor as editor
 import pyttsx3
 import nltk
 
+
 class TextToSpeech:
     engine: pyttsx3.Engine
 
@@ -242,12 +243,10 @@ def video_gen(pdf_file_path: str, id: str):
             os.remove(file)
 
     print('Concatenating final videos!!')
-    concatenate_videos(final_videos, id + ".mp4")
 
-    # for file in final_videos:
-    #     os.remove(file)
-
-    # remove the created directory
-    os.remove(pdf_file_path[pdf_file_path.index(os.path.basename(pdf_file_path))-1:])
+    if len(final_videos) > 1:
+        concatenate_videos(final_videos, id + ".mp4")
+    else:
+        os.rename(final_videos[0], id + ".mp4")
 
     return final_summary

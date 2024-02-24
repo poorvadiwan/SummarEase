@@ -2,6 +2,7 @@ import time
 import boto3
 import os
 import uuid
+import shutil
 from .serializers import SummarEaseSerializer
 from .logic import video_gen
 from .models import SummarEase
@@ -91,6 +92,8 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
             serializer = SummarEaseSerializer(data)
 
             send_email(email, data.video.url)
+
+            shutil.rmtree(destination_path)
 
             return Response(data={'message': serializer.data}, status=status.HTTP_201_CREATED)
 
