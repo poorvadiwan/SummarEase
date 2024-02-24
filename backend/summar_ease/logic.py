@@ -3,13 +3,16 @@ from time import sleep
 from PyPDF2 import PdfReader
 from icrawler.builtin import GoogleImageCrawler
 from langchain.text_splitter import NLTKTextSplitter
+from math import ceil
+from threading import Thread
+from multiprocessing import Process
 import requests
 import json
 import os
 import os
 import moviepy.editor as editor
 import pyttsx3
-
+import nltk
 
 class TextToSpeech:
     engine: pyttsx3.Engine
@@ -71,6 +74,7 @@ def extract_keywords(sentence):
 
     if 'error' in response.text:
         print("Keyword extraction failed, trying again!!")
+        sleep(5)
         response = extract_keywords(sentence)
 
     print("Keywords extracted!!")
@@ -100,14 +104,28 @@ def create_video_from_image_sentence(sentence, keyword, output_file):
     download_image_from_keyword(keyword),
     create_audio_from_sentence(sentence, audio_file)
 
+    # t1 = Process(target=download_image_from_keyword, args=(keyword,))
+    # t2 = Process(target=create_audio_from_sentence, args=(sentence, audio_file))
+
+    # t1.start()
+    # t2.start()
+    # t1.join()
+    # t2.join()
+
     try:
         img = [f for f in os.listdir('./') if f.endswith(('.jpg', '.png', '.jpeg'))][0]
     except IndexError:
         try:
+            print('Image download failed, trying again 1 !!')
             download_image_from_keyword(keyword)
+            # t1.start()
+            # t1.join()
             img = [f for f in os.listdir('./') if f.endswith(('.jpg', '.png', '.jpeg'))][0]
         except IndexError:
+            print('Image download failed, trying again 2 !!')
             download_image_from_keyword(keyword)
+            # t1.start()
+            # t1.join()
             img = [f for f in os.listdir('./') if f.endswith(('.jpg', '.png', '.jpeg'))][0]
 
     sleep(2)
@@ -153,16 +171,29 @@ def video_gen(pdf_file_path: str, id: str):
     final_summary = []
 
     extracted_text =  extract_text_from_pdf(pdf_file_path)
+    # number_of_tokens = len(nltk.word_tokenize(extracted_text))
+    number_of_characters = len(extracted_text)
 
-    if len(extracted_text) > 15000:
+    if number_of_characters > 15000:
         chunk_size = 15000
     else:
-        chunk_size = len(extracted_text)
+        chunk_size = number_of_characters
 
     text_splitter = NLTKTextSplitter(chunk_size=chunk_size)
+
+    # print(text_splitter._chunk_size)
+
     texts = text_splitter.split_text(extracted_text)
+
+    # print(len(texts))
+    # print(texts)
+    # print(texts[0])
+
     print("Divided into chunks!!")
-    for chunk_count in range(int(len(extracted_text)/chunk_size)):
+
+    number_of_chunks = ceil(number_of_characters/chunk_size)
+
+    for chunk_count in range(number_of_chunks):
         chunk = texts[chunk_count]
 
         summarized_text = json.loads(summarize(chunk))
@@ -174,6 +205,10 @@ def video_gen(pdf_file_path: str, id: str):
 
         video_files = []
         extracted_keywords = None
+
+        respective_chunk_dir = os.path.join(os.getcwd(), str(summarized_text_id))
+        os.makedirs(respective_chunk_dir, exist_ok=True)
+        os.chdir(respective_chunk_dir)
 
         for i, sentence in enumerate(summary_sentences):
             print(sentence)
@@ -195,9 +230,11 @@ def video_gen(pdf_file_path: str, id: str):
                     create_video_from_image_sentence(sentence, extracted_keywords[0], str(i))
                     success = True
 
-            video_files.append(str(i) + '.mp4')
+            video_files.append(respective_chunk_dir + '/' + str(i) + '.mp4')
 
-        final_video_file = str(summarized_text_id) + '.mp4'
+        os.chdir('..')
+
+        final_video_file = respective_chunk_dir + '/' + str(summarized_text_id) + '.mp4'
         final_videos.append(final_video_file)
         concatenate_videos(video_files, final_video_file)
 
@@ -206,7 +243,11 @@ def video_gen(pdf_file_path: str, id: str):
 
     print('Concatenating final videos!!')
     concatenate_videos(final_videos, id + ".mp4")
-    for file in final_videos:
-        os.remove(file)
+
+    # for file in final_videos:
+    #     os.remove(file)
+
+    # remove the created directory
+    os.remove(pdf_file_path[pdf_file_path.index(os.path.basename(pdf_file_path))-1:])
 
     return final_summary

@@ -1,9 +1,11 @@
+import time
 import boto3
 import os
 import uuid
 from .serializers import SummarEaseSerializer
 from .logic import video_gen
 from .models import SummarEase
+from .email import send_email, check_email
 from django.conf import settings
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
@@ -22,13 +24,10 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
     def upload_video_to_s3(self, video_location):
         s3_client = boto3.client('s3')
         object_name = 'videos/' + os.path.basename(video_location)
-        bucket = settings.AWS_STORAGE_BUCKET_NAME
 
         s3_client.upload_file(video_location, 'summar-ease', object_name)
 
-        video_url = f'{object_name}'
-
-        return video_url
+        return object_name
 
 
     def get(self, request, *args, **kwargs):
@@ -37,6 +36,10 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
 
     def post(self, request):
         serializer = SummarEaseSerializer(data=request.data)
+        email = serializer.initial_data.pop('email')[0]
+
+        if not check_email(email):
+            return Response(data={'message': 'Invalid email!!'}, status=status.HTTP_400_BAD_REQUEST)
 
         if serializer.is_valid():
             uploaded_document = serializer.validated_data.pop('document')
@@ -63,7 +66,12 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
 
             os.chdir(destination_path)
 
+            start_time = time.time()
+
             summary: list = video_gen(document_location, str(id))
+
+            print(f"Time taken: {time.time() - start_time}")
+
             summary = '. '.join(summary)
 
             video_location = destination_path + '/' + str(id) + '.mp4'
@@ -81,6 +89,8 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
             data.save()
 
             serializer = SummarEaseSerializer(data)
+
+            send_email(email, data.video.url)
 
             return Response(data={'message': serializer.data}, status=status.HTTP_201_CREATED)
 
@@ -109,7 +119,6 @@ class SummarEaseDetailView(APIView):
             ExpectedBucketOwner='954830862269',
             )
             print(response)
-            exit()
             summar_ease.delete()
 
             return Response(data={'message': 'Data deleted!!'}, status=status.HTTP_204_NO_CONTENT)
