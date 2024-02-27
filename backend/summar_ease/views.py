@@ -6,7 +6,7 @@ import shutil
 from .serializers import SummarEaseSerializer
 from .logic import video_gen
 from .models import SummarEase
-from .email import send_email, check_email
+from .email_utils import send_email, check_email
 from django.conf import settings
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView

@@ -1,8 +1,8 @@
 from tempfile import NamedTemporaryFile
 from time import sleep
 from PyPDF2 import PdfReader
-from icrawler.builtin import GoogleImageCrawler
 from langchain.text_splitter import NLTKTextSplitter
+from icrawler.builtin import GoogleImageCrawler
 from math import ceil
 from threading import Thread
 from multiprocessing import Process
@@ -11,28 +11,38 @@ import json
 import os
 import os
 import moviepy.editor as editor
-import pyttsx3
+# import pyttsx3
+from gtts import gTTS
 import nltk
+import uuid
 
 
-class TextToSpeech:
-    engine: pyttsx3.Engine
+# class TextToSpeech:
+        
+    # engine: pyttsx3.Engine
 
-    def __init__(self, rate: int, volume: float):
-        self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', rate)
-        self.engine.setProperty('volume', volume)
+    # def __init__(self, rate: int, volume: float):
+    #     self.engine = pyttsx3.init()
+    #     self.engine.setProperty('rate', rate)
+    #     self.engine.setProperty('volume', volume)
 
-    def list_voices(self):
-        voices = self.engine.getProperty('voices')
-        for voice in voices:
-            print(voice, voice.id, voice.languages, voice.gender)
+    # def list_voices(self):
+    #     voices = self.engine.getProperty('voices')
+    #     for voice in voices:
+    #         print(voice, voice.id, voice.languages, voice.gender)
 
-    def speak(self, text: str, save: bool, file_name: str):
-        # self.engine.say(text)
-        self.engine.save_to_file(text=text, filename=file_name)
-        self.engine.runAndWait()
+    # def speak(self, text: str, save: bool, file_name: str):
+    #     # self.engine.say(text)
+    #     self.engine.save_to_file(text=text, filename=file_name)
+    #     self.engine.runAndWait()
 
+def text_to_speech(text, audio_file):
+    speech = gTTS(text, lang='en', slow=False)
+
+    speech.save(audio_file)
+
+    # plays the speech rn
+    os.system('afplay '+ audio_file)
 
 def summarize(text):
     print("Text summarization started!!")
@@ -87,9 +97,9 @@ def download_image_from_keyword(keyword: str):
     google_crawler.crawl(keyword=keyword, max_num=1)
 
 
-def create_audio_from_sentence(sentence, output_file):
-    tts = TextToSpeech(rate=158, volume=1.0)
-    tts.speak(text=sentence, save=True, file_name=output_file)
+# def create_audio_from_sentence(sentence, output_file):
+#     tts = TextToSpeech(rate=158, volume=1.0)
+#     tts.speak(text=sentence, save=True, file_name=output_file)
 
 
 def create_video(output_file, img):
@@ -103,7 +113,7 @@ def create_video_from_image_sentence(sentence, keyword, output_file):
     audio_file = 'test.mp3'
 
     download_image_from_keyword(keyword),
-    create_audio_from_sentence(sentence, audio_file)
+    text_to_speech(sentence, audio_file)
 
     # t1 = Process(target=download_image_from_keyword, args=(keyword,))
     # t2 = Process(target=create_audio_from_sentence, args=(sentence, audio_file))
@@ -166,7 +176,11 @@ def extract_text_from_pdf(pdf):
         return text
 
 
-def video_gen(pdf_file_path: str, id: str):
+def video_gen(pdf_file_path: str, id: str = None):
+
+    if id is None:
+        id = str(uuid.uuid4())
+
     print('Video generation started!!')
     final_videos = []
     final_summary = []
