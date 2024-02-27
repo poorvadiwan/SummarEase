@@ -11,30 +11,30 @@ import json
 import os
 import os
 import moviepy.editor as editor
-# import pyttsx3
+import pyttsx3
 from gtts import gTTS
 import nltk
 import uuid
 
 
-# class TextToSpeech:
+class TextToSpeech:
         
-    # engine: pyttsx3.Engine
+    engine: pyttsx3.Engine
 
-    # def __init__(self, rate: int, volume: float):
-    #     self.engine = pyttsx3.init()
-    #     self.engine.setProperty('rate', rate)
-    #     self.engine.setProperty('volume', volume)
+    def __init__(self, rate: int, volume: float):
+        self.engine = pyttsx3.init()
+        self.engine.setProperty('rate', rate)
+        self.engine.setProperty('volume', volume)
 
-    # def list_voices(self):
-    #     voices = self.engine.getProperty('voices')
-    #     for voice in voices:
-    #         print(voice, voice.id, voice.languages, voice.gender)
+    def list_voices(self):
+        voices = self.engine.getProperty('voices')
+        for voice in voices:
+            print(voice, voice.id, voice.languages, voice.gender)
 
-    # def speak(self, text: str, save: bool, file_name: str):
-    #     # self.engine.say(text)
-    #     self.engine.save_to_file(text=text, filename=file_name)
-    #     self.engine.runAndWait()
+    def speak(self, text: str, save: bool, file_name: str):
+        # self.engine.say(text)
+        self.engine.save_to_file(text=text, filename=file_name)
+        self.engine.runAndWait()
 
 def text_to_speech(text, audio_file):
     speech = gTTS(text, lang='en', slow=False)
@@ -176,10 +176,7 @@ def extract_text_from_pdf(pdf):
         return text
 
 
-def video_gen(pdf_file_path: str, id: str = None):
-
-    if id is None:
-        id = str(uuid.uuid4())
+def video_gen(pdf_file_path: str, id: str):
 
     print('Video generation started!!')
     final_videos = []
