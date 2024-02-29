@@ -23,6 +23,5 @@ def check_email(email):
 
     if(re.fullmatch(regex, email)):
         return True
-
     else:
         return False

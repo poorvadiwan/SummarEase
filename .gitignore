@@ -8,3 +8,5 @@ nvenv
 venv
 backend/output
 backend/files
+.vscode
+./package-lock.json

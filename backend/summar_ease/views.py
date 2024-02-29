@@ -12,9 +12,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, DestroyModelMixin
-from PyPDF2 import PdfReader
-from moviepy.editor import VideoFileClip
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
 
 
 class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
