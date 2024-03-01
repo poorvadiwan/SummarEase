@@ -18,7 +18,7 @@ import uuid
 
 
 class TextToSpeech:
-        
+
     engine: pyttsx3.Engine
 
     def __init__(self, rate: int, volume: float):
@@ -38,11 +38,8 @@ class TextToSpeech:
 
 def text_to_speech(text, audio_file):
     speech = gTTS(text, lang='en', slow=False)
-
     speech.save(audio_file)
 
-    # plays the speech rn
-    os.system('afplay '+ audio_file)
 
 def summarize(text):
     print("Text summarization started!!")
@@ -97,9 +94,9 @@ def download_image_from_keyword(keyword: str):
     google_crawler.crawl(keyword=keyword, max_num=1)
 
 
-# def create_audio_from_sentence(sentence, output_file):
-#     tts = TextToSpeech(rate=158, volume=1.0)
-#     tts.speak(text=sentence, save=True, file_name=output_file)
+def create_audio_from_sentence(sentence, output_file):
+    tts = TextToSpeech(rate=158, volume=1.0)
+    tts.speak(text=sentence, save=True, file_name=output_file)
 
 
 def create_video(output_file, img):
