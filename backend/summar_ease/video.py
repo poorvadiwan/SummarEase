@@ -13,12 +13,20 @@ def create_video(output_file, img):
     video.write_videofile(output_file + ".mp4",  codec='libx264', fps=24)
 
 
+def concatenate_videos(video_files: list, output_file: str):
+    print('Concatenating videos!!')
+    video_clips = [editor.VideoFileClip(video_file) for video_file in video_files]
+
+    final_video = editor.concatenate_videoclips(video_clips, method="compose")
+    final_video.write_videofile(output_file,  codec='libx264', fps=1)
+
+
 def create_video_from_image_sentence(sentence, keyword, output_file):
     print('Creating video from image and sentence!!')
     audio_file = 'test.mp3'
 
     download_image_from_keyword(keyword),
-    text_to_speech(sentence, audio_file)
+    create_audio_from_sentence(sentence, audio_file)
 
     #image_downloading_thread = Process(target=download_image_from_keyword, args=(keyword,))
     #audio_creation_thread = Process(target=create_audio_from_sentence, args=(sentence, audio_file))
@@ -50,11 +58,3 @@ def create_video_from_image_sentence(sentence, keyword, output_file):
 
     os.remove(img)
     os.remove(output_file + ".mp3")
-
-
-def concatenate_videos(video_files: list, output_file: str):
-    print('Concatenating videos!!')
-    video_clips = [editor.VideoFileClip(video_file) for video_file in video_files]
-
-    final_video = editor.concatenate_videoclips(video_clips, method="compose")
-    final_video.write_videofile(output_file,  codec='libx264', fps=24)

@@ -27,6 +27,9 @@ def video_gen(pdf_file_path: str, id: str):
     final_summary = []
 
     extracted_text =  extract_text_from_pdf(pdf_file_path)
+    extracted_text = extracted_text.replace('\n', ' ')
+    extracted_text = extracted_text.replace('\x0c', ' ')
+
     number_of_characters = len(extracted_text)
     chunk_size = chunk_size_specifier(number_of_characters)
     text_splitter = NLTKTextSplitter(chunk_size=chunk_size)
