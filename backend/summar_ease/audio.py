@@ -20,6 +20,11 @@ class TextToSpeech:
         self.engine.runAndWait()
 
 
+def create_audio_from_sentence(sentence, output_file):
+    tts = TextToSpeech(rate=158, volume=1.0)
+    tts.speak(text=sentence, save=True, file_name=output_file)
+
+
 def text_to_speech(text, audio_file):
     speech = gTTS(text, lang='en', slow=False)
     speech.save(audio_file)

@@ -1,7 +1,7 @@
 from time import sleep
 
 from .keyword import download_image_from_keyword
-from .audio import text_to_speech
+from .audio import text_to_speech, create_audio_from_sentence
 
 import moviepy.editor as editor
 import os
