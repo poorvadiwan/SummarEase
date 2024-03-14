@@ -29,7 +29,7 @@ const UploadPdf = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [pdfResult, setPdfResult] = useState<any>(dummy);
   const [enterNumberDialog, setEnterNumberDialog] = useState<any>(false);
-  const [mobNumber, setModNumber] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setSelectedFiles(acceptedFiles);
   }, []);
@@ -45,20 +45,21 @@ const UploadPdf = () => {
 
   const handleSubmit = () => {
     // POST PDF TO BACKEND FOR PROCESSING
-    // OPEN DIALOG FOR EMAIL ENTRY
     // CALL VONAGE TO SEND MAIL
-    console.log(selectedFiles);
+    console.log(selectedFiles, email);
+    toast.info("We will send you your video to your email.");
+    setEnterNumberDialog(false);
+    setSelectedFiles([]);
+
     // costly api call
-    sendPDF(selectedFiles[0])
+    sendPDF(selectedFiles[0], email)
       .then((res: any) => {
         setPdfResult(res?.data);
-        sendSMS(res?.data.document);
       })
       .catch((err) => {
+        toast.error("Something Went wrong with previous request...");
         console.log(err);
       });
-    setEnterNumberDialog(true);
-    setSelectedFiles([]);
   };
 
   const files = selectedFiles.map((file: any) => (
@@ -71,8 +72,6 @@ const UploadPdf = () => {
 
   useEffect(() => {
     console.log(pdfResult);
-    // sendSMS(pdfResult?.document);
-    // window.location.reload();
   }, [pdfResult]);
 
   return (
@@ -101,13 +100,13 @@ const UploadPdf = () => {
             </label>
             <label>
               <Text as="div" size="2" mb="1" weight="bold">
-                Mobile
+                Email
               </Text>
               <TextField.Input
-                defaultValue="7987746758"
-                value={mobNumber}
-                onChange={(e) => setModNumber(e.target.value)}
-                placeholder="Enter your mobile number"
+                // defaultValue="7987746758"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
               />
             </label>
           </Flex>
@@ -125,14 +124,7 @@ const UploadPdf = () => {
               </Button>
             </Dialog.Close>
             <Dialog.Close>
-              <Button
-                onClick={() => {
-                  toast.info("We will send you your video to your email.");
-                  setEnterNumberDialog(false);
-                }}
-              >
-                Save
-              </Button>
+              <Button onClick={handleSubmit}>Save</Button>
             </Dialog.Close>
           </Flex>
         </Dialog.Content>
@@ -193,7 +185,11 @@ const UploadPdf = () => {
         <Box className="self-center flex flex-row gap-4 pb-6">
           {selectedFiles.length > 0 ? (
             <>
-              <Button variant="solid" size={"4"} onClick={handleSubmit}>
+              <Button
+                variant="solid"
+                size={"4"}
+                onClick={() => setEnterNumberDialog(true)}
+              >
                 <Text size={"5"}>Submit</Text>
               </Button>
 

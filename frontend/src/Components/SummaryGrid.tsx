@@ -21,7 +21,7 @@ const SummaryGrid: React.FC = () => {
   const fetchAllSummaries = () => {
     getAllSummaries()
       .then((res: any) => {
-        setSummaries(res?.data);
+        setSummaries(res);
       })
       .catch((err) => console.log(err));
   };
@@ -50,26 +50,11 @@ const SummaryGrid: React.FC = () => {
           <Box
             key={index}
             className="relative"
-            onMouseEnter={() => {
-              const videoElement = document.getElementById(
-                `video-${index}`
-              ) as HTMLVideoElement | null;
-              if (videoElement) {
-                videoElement.play();
-              }
-            }}
-            onMouseLeave={() => {
-              const videoElement = document.getElementById(
-                `video-${index}`
-              ) as HTMLVideoElement | null;
-              if (videoElement) {
-                videoElement.pause();
-              }
-            }}
+            style={{ paddingBottom: "56.25%" }} // 16:9 aspect ratio
           >
             <video
               id={`video-${index}`}
-              className="bg-cover video-element w-full bg-black border-2"
+              className="bg-cover video-element absolute inset-0 w-full h-full"
               muted
               autoPlay={false}
               loop
@@ -77,7 +62,7 @@ const SummaryGrid: React.FC = () => {
             >
               <source
                 src={
-                  //   item?.video ||
+                  item?.video ||
                   "https://live-par-2-abr.livepush.io/vod/bigbuckbunnyclip.mp4"
                 }
                 type="video/mp4"

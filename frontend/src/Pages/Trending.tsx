@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllSummaries, getAllTrendies } from "../Data/SummaryData";
+import { getAllSummaries } from "../Data/SummaryData";
 import CardDialog from "../Components/CardDialog";
 import Loader from "../Components/Loading";
 import { Box, Card, Flex, Heading, Section, Text } from "@radix-ui/themes";
