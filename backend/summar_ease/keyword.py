@@ -61,6 +61,7 @@ def keywords_processor_multithreading(summary_sentences: list, max_workers=10) -
 
     def process_sentence(index, text):
         extracted_keywords[index] = get_and_process_keywords_from_sentence(text)
+        print(f"Processed sentence {index}, {text}, {extracted_keywords[index]}!!")
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         for i, text in enumerate(summary_sentences):

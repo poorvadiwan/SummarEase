@@ -10,7 +10,7 @@ import os
 def create_video(output_file, img):
     audio = editor.AudioFileClip(output_file + ".mp3")
     video = editor.ImageClip(img).set_duration(audio.duration).set_audio(audio)
-    video.write_videofile(output_file + ".mp4",  codec='libx264', fps=24)
+    video.write_videofile(output_file + ".mp4",  codec='libx265', fps=1)
 
 
 def concatenate_videos(video_files: list, output_file: str):
@@ -18,7 +18,7 @@ def concatenate_videos(video_files: list, output_file: str):
     video_clips = [editor.VideoFileClip(video_file) for video_file in video_files]
 
     final_video = editor.concatenate_videoclips(video_clips, method="compose")
-    final_video.write_videofile(output_file,  codec='libx264', fps=1)
+    final_video.write_videofile(output_file,  codec='libx265', fps=1)
 
 
 def create_video_from_image_sentence(sentence, keyword, output_file):
