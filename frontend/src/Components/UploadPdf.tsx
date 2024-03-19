@@ -124,7 +124,7 @@ const UploadPdf = () => {
               </Button>
             </Dialog.Close>
             <Dialog.Close>
-              <Button onClick={handleSubmit}>Save</Button>
+              <Button onClick={handleSubmit}>Send</Button>
             </Dialog.Close>
           </Flex>
         </Dialog.Content>
@@ -162,7 +162,7 @@ const UploadPdf = () => {
               {selectedFiles.length > 0 ? (
                 <Flex align={"center"} justify={"center"} direction={"column"}>
                   <Flex align={"center"} justify={"center"} gap="2">
-                    <img src="/pdf.png" alt="PDF" className="h-12 w-12" />
+                    <img src="/pdf-white.png" alt="PDF" className="h-12 w-12" />
                     <ul>{files}</ul>
                   </Flex>
                 </Flex>
@@ -171,7 +171,7 @@ const UploadPdf = () => {
               ) : (
                 <Flex align={"center"} justify={"center"} direction={"column"}>
                   <img
-                    src={"/upload.png"}
+                    src={"/upload-white.png"}
                     className="h-24 w-24"
                     alt="Drop your pdfs here..."
                   />
