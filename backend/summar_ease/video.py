@@ -26,7 +26,7 @@ def create_video_from_image_sentence(sentence, keyword, output_file):
     audio_file = 'test.mp3'
 
     download_image_from_keyword(keyword),
-    create_audio_from_sentence(sentence, audio_file)
+    text_to_speech(sentence, audio_file)
 
     #image_downloading_thread = Process(target=download_image_from_keyword, args=(keyword,))
     #audio_creation_thread = Process(target=create_audio_from_sentence, args=(sentence, audio_file))

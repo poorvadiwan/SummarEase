@@ -4,20 +4,18 @@ from .pdf import extract_text_from_pdf
 from .summary import *
 from .keyword import keywords_processor_multithreading, h1_keyword_extractor
 from .video import create_video_from_image_sentence, concatenate_videos
-
+from math import floor
 import os
 import time
 
 
 def chunk_size_specifier(number_of_characters: int):
-    chunk_size_limit = 2000
+    chunk_size_limit = 80000
 
     if number_of_characters > chunk_size_limit:
-        chunk_size = (number_of_characters/((number_of_characters//chunk_size_limit)+1)) + 800
+        return floor((number_of_characters/((number_of_characters//chunk_size_limit)+1)) + 800)
     else:
-        chunk_size = number_of_characters + 10
-
-    return chunk_size
+        return number_of_characters
 
 
 def video_gen(pdf_file_path: str, id: str):
@@ -32,12 +30,22 @@ def video_gen(pdf_file_path: str, id: str):
 
     number_of_characters = len(extracted_text)
     chunk_size = chunk_size_specifier(number_of_characters)
-    text_splitter = NLTKTextSplitter(chunk_size=chunk_size)
-    chunk_list = text_splitter.split_text(extracted_text)
+
+    print('Characters = ', number_of_characters)
+    print('Chunk_size = ', chunk_size)
+
+    if number_of_characters == chunk_size:
+        chunk_list = [extracted_text]
+    else:
+        text_splitter = NLTKTextSplitter(chunk_size=chunk_size)
+        chunk_list = text_splitter.split_text(extracted_text)
 
     # if merge_last_ele:
     #     chunk_list[len(chunk_list)-2] += ' ' + chunk_list[len(chunk_list) - 1]
     #     chunk_list.pop()
+
+    for ele in chunk_list:
+        print(len(ele))
 
     print("Divided into chunks!!")
 
@@ -56,6 +64,7 @@ def video_gen(pdf_file_path: str, id: str):
 
         now = time.time()
         extracted_keywords: dict = keywords_processor_multithreading(summary_sentences, len(summary_sentences))
+        print(extracted_keywords)
         print(f"Time taken to extract keywords: {time.time() - now}")
 
         # extracted_keywords = None
