@@ -1,6 +1,5 @@
 from PyPDF2 import PdfReader
 from tempfile import NamedTemporaryFile
-
 import os
 
 
@@ -9,7 +8,7 @@ def process_uploaded_pdf(uploaded_pdf):
         temp_file.write(uploaded_pdf.read())
         temp_file.close()
         extracted_text = extract_text_from_pdf(temp_file)
-        os.unlink(temp_file.name)  # Remove the temporary file after use
+        os.unlink(temp_file.name)
         return extracted_text
 
 
@@ -20,5 +19,8 @@ def extract_text_from_pdf(pdf):
         text = ''
         for page_num in range(len(pdf_reader.pages)):
             text += pdf_reader.pages[page_num].extract_text()
-        print("Text Extracted!!")
-        return text
+
+    print("Text Extracted!!")
+    text = text.replace('\n', ' ')
+    text = text.replace('\x0c', ' ')
+    return text

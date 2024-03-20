@@ -1,5 +1,6 @@
 from multiprocessing import Manager
 from threading import Thread
+from time import sleep
 import json
 import requests
 
@@ -34,6 +35,9 @@ def chunks_summarizer(chunk_list: list):
     threads = []
 
     for i, text in enumerate(chunk_list):
+        if i % 5 == 0 and i != 0:
+            sleep(60)  # Wait for a minute before processing the next 5 paragraphs
+
         t = Thread(target=lambda: summarized_chunks.update({i: summarize(text)}))
         threads.append(t)
         t.start()
