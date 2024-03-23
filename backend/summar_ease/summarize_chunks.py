@@ -1,5 +1,4 @@
-from multiprocessing import Process, Manager
-from threading import Thread
+from multiprocessing import Manager
 from concurrent.futures import ThreadPoolExecutor
 import time
 import json
@@ -10,7 +9,6 @@ def keywords_processor_multithreading(summary_sentences: list):
     print(summary_sentences)
     manager = Manager()
     extracted_keywords = manager.dict()
-    threads = []
 
     def process_sentence(index, text):
         extracted_keywords[index] = get_and_process_keywords_from_sentence(text)

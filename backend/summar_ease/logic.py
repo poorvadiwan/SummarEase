@@ -1,9 +1,10 @@
-from langchain.text_splitter import NLTKTextSplitter
 from .pdf import extract_text_from_pdf
 from .summary import *
 from .keyword import keywords_processor_multithreading
-from .video import create_video_from_image_sentence, concatenate_videos
+from .video import concatenate_final_videos, concatenate_videos, create_video_from_image_audio_multiprocessing
 from .chunks import chunk_creator
+from .audio import gtts_multithreading
+from .image import download_images_from_keyword_multithreading
 import os
 import time
 
@@ -22,53 +23,55 @@ def video_gen(pdf_file_path: str, id: str):
 
     print("Divided into chunks!!")
 
-    time1 = time.time()
+    now = time.perf_counter()
     summarized_chunks = chunks_summarizer(chunk_list)
-    print(f"Time taken to summarize chunks: {(time.time() - time1)}")
+    print(f"Time taken to summarize chunks: {(time.perf_counter() - now)}")
+
     print(summarized_chunks)
 
     for i in range(len(chunk_list)):
-        summary = summarized_chunks.get(i).get('summary')
-        summary_id = summarized_chunks.get(i).get('id')
-        final_summary.append(summary)
-        summary_sentences = summary.split('. ')
+        try:
+            summary = summarized_chunks.get(i).get('summary')
+            summary_id = summarized_chunks.get(i).get('id')
+            final_summary.append(summary)
+            summary_sentences = summary.split('. ')
+        except AttributeError:
+            continue
 
-        video_files = []
-
-        now = time.time()
+        now = time.perf_counter()
         extracted_keywords: dict = keywords_processor_multithreading(summary_sentences, len(summary_sentences))
+        print(f"Time taken to extract keywords: {time.perf_counter() - now}")
+
         print(extracted_keywords)
-        print(f"Time taken to extract keywords: {time.time() - now}")
 
         respective_chunk_dir = os.path.join(os.getcwd(), str(summary_id))
         os.makedirs(respective_chunk_dir, exist_ok=True)
         os.chdir(respective_chunk_dir)
 
-        for i, sentence in enumerate(summary_sentences):
-            success = False
-            while not success:
-                try:
-                    create_video_from_image_sentence(sentence, extracted_keywords.get(i), str(i))
-                    success = True
-                except OSError:
-                    create_video_from_image_sentence(sentence, extracted_keywords.get(i), str(i))
-                    success = True
+        now = time.perf_counter()
+        extracted_keywords = download_images_from_keyword_multithreading(extracted_keywords)
+        print(f"Time taken to download images: {time.perf_counter() - now}")
 
-            video_files.append(respective_chunk_dir + '/' + str(i) + '.mp4')
+        print(extracted_keywords)
+
+        now = time.perf_counter()
+        gtts_multithreading(summary_sentences)
+        print(f"Time taken to convert text to speech: {time.perf_counter() - now}")
+
+        now = time.perf_counter()
+        create_video_from_image_audio_multiprocessing(len(summary_sentences), extracted_keywords)
+        print(f"Time taken to create videos: {time.perf_counter() - now}")
 
         os.chdir('..')
 
         final_video_file = respective_chunk_dir + '/' + str(summary_id) + '.mp4'
+        concatenate_videos(respective_chunk_dir, len(summary_sentences), final_video_file)
         final_videos.append(final_video_file)
-        concatenate_videos(video_files, final_video_file)
-
-        for file in video_files:
-            os.remove(file)
 
     print('Concatenating final videos!!')
 
     if len(final_videos) > 1:
-        concatenate_videos(final_videos, id + ".mp4")
+        concatenate_final_videos(final_videos, id + ".mp4")
     else:
         os.rename(final_videos[0], id + ".mp4")
 
