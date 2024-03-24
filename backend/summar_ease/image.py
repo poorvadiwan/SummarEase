@@ -28,7 +28,9 @@ def downloaded_image_map_with_keyword_and_check(keywords: dict):
 
     keys = []
     for key in keywords.keys():
-        if len(str(key)) == 1:
+        if key == 9:
+            keys.append('000010')
+        elif len(str(key)) == 1:
             keys.append('00000' + str(key+1))
         elif len(str(key)) == 2:
             keys.append('0000' + str(key+1))

@@ -8,8 +8,8 @@ def create_video_from_image_audio(image_file, audio_file, output_file):
     video = editor.ImageClip(image_file).set_duration(audio_file.duration).set_audio(audio_file)
     video.write_videofile(output_file,  codec='libx265', fps=1)
 
-    os.remove(image_file)
-    os.remove(audio_file.filename)
+    # os.remove(image_file)
+    # os.remove(audio_file.filename)
 
 
 def concatenate_final_videos(video_files: list, output_file: str):
