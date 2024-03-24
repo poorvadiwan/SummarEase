@@ -3,10 +3,10 @@ import boto3
 import os
 import uuid
 import shutil
-from .serializers import SummarEaseSerializer
-from .logic import video_gen
-from .models import SummarEase
 from .email_utils import send_email, check_email
+from .models import SummarEase
+from .logic import video_gen
+from .serializers import SummarEaseSerializer
 from django.conf import settings
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
@@ -64,9 +64,9 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
             print("PDF saved locally!!")
 
             os.chdir(destination_path)
-            start_time = time.time()
+            start_time = time.perf_counter()
             summary: list = video_gen(document_location, str(id))
-            print(f"Time taken: {time.time() - start_time}")
+            print(f"Time taken: {time.perf_counter() - start_time}")
             summary = '. '.join(summary)
 
             video_location = destination_path + '/' + str(id) + '.mp4'

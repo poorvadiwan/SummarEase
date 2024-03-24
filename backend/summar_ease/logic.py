@@ -1,12 +1,12 @@
-from .pdf import extract_text_from_pdf
-from .summary import *
-from .keyword import keywords_processor_multithreading
-from .video import concatenate_final_videos, concatenate_videos, create_video_from_image_audio_multiprocessing
-from .chunks import chunk_creator
-from .audio import gtts_multithreading
-from .image import download_images_from_keyword_multithreading
 import os
 import time
+from .audio import gtts_multithreading
+from .chunks import chunk_creator
+from .image import download_images_from_keyword_multithreading
+from .keyword import keywords_processor_multithreading
+from .pdf import extract_text_from_pdf
+from .summary import chunks_summarizer
+from .video import concatenate_final_videos, concatenate_videos, create_video_from_image_audio_multiprocessing
 
 
 def video_gen(pdf_file_path: str, id: str):

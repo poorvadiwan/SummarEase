@@ -1,8 +1,8 @@
-from multiprocessing import Manager
-from concurrent.futures import ThreadPoolExecutor
 import time
 import json
 import requests
+from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Manager
 
 
 def keywords_processor_multithreading(summary_sentences: list):

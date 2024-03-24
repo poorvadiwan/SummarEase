@@ -1,8 +1,8 @@
+import json
+import requests
 from multiprocessing import Manager
 from threading import Thread
 from time import sleep
-import json
-import requests
 
 
 def summarize(text):

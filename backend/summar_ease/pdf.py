@@ -1,6 +1,6 @@
+import os
 from PyPDF2 import PdfReader
 from tempfile import NamedTemporaryFile
-import os
 
 
 def process_uploaded_pdf(uploaded_pdf):

@@ -1,8 +1,8 @@
+import json
+import requests
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Manager
 from time import sleep
-import json
-import requests
 
 
 def h1_keyword_extractor(sentence) -> str:
@@ -60,5 +60,18 @@ def keywords_processor_multithreading(summary_sentences: list, max_workers=10) -
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         for i, text in enumerate(summary_sentences):
             executor.submit(process_sentence, i, text)
+
+    return extracted_keywords
+
+
+def fetch_keywords_for_all_chunks(summarized_chunks: dict) -> dict:
+    extracted_keywords = dict()
+
+    def call_keyword_processor_multithreading(summary_sentences: list, index: int):
+        extracted_keywords[index] = keywords_processor_multithreading(summary_sentences)
+
+    with ThreadPoolExecutor() as executor:
+        for i in range(len(summarized_chunks)):
+            executor.submit(call_keyword_processor_multithreading, summarized_chunks.get(i).get('summary').split('. '), i)
 
     return extracted_keywords

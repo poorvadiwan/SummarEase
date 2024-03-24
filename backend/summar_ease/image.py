@@ -1,7 +1,7 @@
-from icrawler.builtin import ImageDownloader, GoogleImageCrawler
-from concurrent.futures import ThreadPoolExecutor
-from multiprocessing import Process, Manager
 import os
+from concurrent.futures import ThreadPoolExecutor
+from icrawler.builtin import ImageDownloader, GoogleImageCrawler
+from multiprocessing import Process, Manager
 
 
 def download_image_from_keyword(keyword: str, index: int) -> None:

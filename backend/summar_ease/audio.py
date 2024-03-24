@@ -4,7 +4,6 @@ from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Manager
 
 
-
 class TextToSpeech:
     engine: pyttsx3.Engine
 
