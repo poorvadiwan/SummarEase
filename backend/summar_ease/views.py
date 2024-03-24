@@ -64,19 +64,14 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
             print("PDF saved locally!!")
 
             os.chdir(destination_path)
-
             start_time = time.time()
-
             summary: list = video_gen(document_location, str(id))
-
             print(f"Time taken: {time.time() - start_time}")
-
             summary = '. '.join(summary)
 
             video_location = destination_path + '/' + str(id) + '.mp4'
-            video_url = self.upload_video_to_s3(video_location)
+            self.upload_video_to_s3(video_location)
             print("Video uploaded to S3!!")
-            print(video_url)
 
             data = SummarEase(
                 id=id,

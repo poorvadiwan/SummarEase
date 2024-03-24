@@ -55,6 +55,7 @@ const UploadPdf = () => {
     sendPDF(selectedFiles[0], email)
       .then((res: any) => {
         setPdfResult(res?.data);
+        console.log(res?.data);
       })
       .catch((err) => {
         toast.error("Something Went wrong with previous request...");
