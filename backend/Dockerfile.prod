@@ -43,7 +43,7 @@ RUN pip install --no-cache /wheels/*
 # RUN chmod +x  $APP_HOME/entrypoint.sh
 
 COPY . $APP_HOME
-
+RUN mkdir -p /home/backend/nltk_data && chown -R backend:backend /home/backend/nltk_data
 RUN chown -R backend:backend $APP_HOME
 
 USER backend

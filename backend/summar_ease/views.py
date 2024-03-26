@@ -14,6 +14,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 
+import nltk
+nltk.download('punkt')
 
 class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
 
