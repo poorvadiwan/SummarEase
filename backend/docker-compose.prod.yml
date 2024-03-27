@@ -2,9 +2,12 @@ version: '3.8'
 
 services:
     django:
+        container_name: django
         build:
             context: .
             dockerfile: Dockerfile.prod
+        networks:
+            - SummarEase-Backend-Network
         command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --timeout 1000
         volumes:
             - static_volume:/home/backend/web/staticfiles
@@ -12,18 +15,21 @@ services:
             - 8000
         env_file:
             - ./.env
-        depends_on:
-            - postgres
-    postgres:
-        image: postgres:12
-        volumes:
-            - postgres_data:/var/lib/postgresql/data/
-        ports:
-            - 5432:5432
-        env_file:
-            - ./.env
+    #     depends_on:
+    #         - postgres
+    # postgres:
+    #     image: postgres:12
+    #     volumes:
+    #         - postgres_data:/var/lib/postgresql/data/
+    #     ports:
+    #         - 5432:5432
+    #     env_file:
+    #         - ./.env
     nginx:
+        container_name: nginx
         build: ./nginx
+        networks:
+            - SummarEase-Backend-Network
         volumes:
             - static_volume:/home/backend/web/staticfiles
         ports:
@@ -31,6 +37,11 @@ services:
         depends_on:
             - django
 
+networks:
+    SummarEase-Backend-Network:
+        driver: bridge
+        external: True
+
 volumes:
-    postgres_data:
+    # postgres_data:
     static_volume:
