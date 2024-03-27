@@ -6,7 +6,7 @@ from .image import download_images_from_keyword_multithreading
 from .keyword import keywords_processor_multithreading
 from .pdf import extract_text_from_pdf
 from .summary import chunks_summarizer
-from .video import concatenate_final_videos, concatenate_videos, create_video_from_image_audio_multiprocessing
+from .video import concatenate_final_videos, concatenate_videos, create_video_from_image_audio_multiprocessing, concatenate_videos_multiprocessing
 
 
 def video_gen(pdf_file_path: str, id: str):
@@ -14,6 +14,7 @@ def video_gen(pdf_file_path: str, id: str):
 
     final_videos = []
     final_summary = []
+    concatenation_processes = []
 
     extracted_text =  extract_text_from_pdf(pdf_file_path)
     chunk_list = chunk_creator(extracted_text)
@@ -65,8 +66,14 @@ def video_gen(pdf_file_path: str, id: str):
         os.chdir('..')
 
         final_video_file = respective_chunk_dir + '/' + str(summary_id) + '.mp4'
-        concatenate_videos(respective_chunk_dir, len(summary_sentences), final_video_file)
         final_videos.append(final_video_file)
+        concatenation_processes.append(concatenate_videos_multiprocessing(respective_chunk_dir, len(summary_sentences), final_video_file))
+
+    for process in concatenation_processes:
+        process.start()
+
+    for process in concatenation_processes:
+        process.join()
 
     print('Concatenating final videos!!')
 

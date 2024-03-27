@@ -1,4 +1,5 @@
 from concurrent.futures import ProcessPoolExecutor
+from multiprocessing import Process
 import moviepy.editor as editor
 import os
 
@@ -26,6 +27,11 @@ def concatenate_videos(respective_chunk_dir: str, num: int, output_file: str):
 
     final_video = editor.concatenate_videoclips(video_clips, method="compose")
     final_video.write_videofile(output_file,  codec='libx265', fps=1)
+
+
+def concatenate_videos_multiprocessing(respective_chunk_dir: str, num: int, output_file: str):
+    process = Process(target=concatenate_videos, args=(respective_chunk_dir, num, output_file))
+    return process
 
 
 def create_video_from_image_audio_multiprocessing(num, keywords):
