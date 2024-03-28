@@ -8,7 +8,7 @@ services:
             dockerfile: Dockerfile.prod
         networks:
             - SummarEase-Backend-Network
-        command: poetry run gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --timeout 1000
+        command: poetry run gunicorn backend.wsgi:application --workers=9 --bind 0.0.0.0:8000 --timeout 1000
         volumes:
             - static_volume:/home/backend/web/staticfiles
         expose:
