@@ -44,7 +44,16 @@ ddown:
 
 
 .PHONY: dlogsdjango
-dlogs:
+dlogsdjango:
 	- sudo docker logs -f django
 
+
+.PHONY: createpg
+createpg:
+	- sudo docker run -p 5432:5432 -d --name postgres --network SummarEase-Backend-Network -e POSTGRES_PASSWORD=postgres postgres
+
+
+.PHONY: dps
+dps:
+	- sudo docker ps
 
