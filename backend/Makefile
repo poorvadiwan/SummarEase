@@ -35,12 +35,12 @@ offpg:
 
 .PHONY: dub
 dub:
-	- sudo docker-compose -f docker-compose.yml up -d --build
+	- sudo docker-compose -f docker-compose.prod.yml up -d --build
 
 
 .PHONY: ddown
 ddown:
-	- sudo docker-compose -f docker-compose.yml down -v
+	- sudo docker-compose -f docker-compose.prod.yml down -v
 
 
 .PHONY: dlogsdjango

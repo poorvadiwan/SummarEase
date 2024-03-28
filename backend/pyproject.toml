@@ -201,6 +201,7 @@ widgetsnbextension = "4.0.9"
 wsproto = "1.2.0"
 yarl = "1.9.4"
 zipp = "3.17.0"
+gunicorn = "^21.2.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.0.0"
