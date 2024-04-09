@@ -14,8 +14,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 
-import nltk
-nltk.download('punkt')
 
 class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
 
@@ -23,10 +21,12 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
     serializer_class = SummarEaseSerializer
 
     def upload_video_to_s3(self, video_location):
+        print("Uploading video to S3!!")
         s3_client = boto3.client('s3')
         object_name = 'videos/' + os.path.basename(video_location)
 
         s3_client.upload_file(video_location, 'summar-ease', object_name)
+        print("Video uploaded to S3!!")
 
         return object_name
 
@@ -73,7 +73,6 @@ class SummarEaseView(GenericAPIView, CreateModelMixin, ListModelMixin):
 
             video_location = destination_path + '/' + str(id) + '.mp4'
             self.upload_video_to_s3(video_location)
-            print("Video uploaded to S3!!")
 
             data = SummarEase(
                 id=id,
