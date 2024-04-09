@@ -1,31 +1,31 @@
 .PHONY: rs
 rs:
-	- poetry run python manage.py runserver
+	-   python manage.py runserver
 
 
 .PHONY: mm
 mm:
-	- poetry run python manage.py makemigrations
+	-   sudo docker exec -it django python manage.py makemigrations
 
 
 .PHONY: mmig
 mmig:
-	- poetry run python manage.py makemigrations $(app)
+	-   sudo docker exec -it django python manage.py makemigrations summar_ease
 
 
 .PHONY: mig
 mig:
-	- poetry run python manage.py migrate
+	-   sudo docker exec -it django python manage.py migrate
 
 
 .PHONY: shell
 shell:
-	- poetry run python manage.py shell
+	-   sudo docker exec -it django python manage.py shell
 
 
 .PHONY: mpyhelp
 mpyhelp:
-	- poetry run python manage.py --help
+	-   sudo docker exec -it django python manage.py --help
 
 
 .PHONY: offpg
@@ -35,7 +35,7 @@ offpg:
 
 .PHONY: dub
 dub:
-	- sudo docker-compose -f docker-compose.prod.yml up -d --build
+	- sudo docker-compose -f docker-compose.prod.yml up  --build
 
 
 .PHONY: ddown
@@ -56,4 +56,9 @@ createpg:
 .PHONY: dps
 dps:
 	- sudo docker ps
+
+
+.PHONY: getinpg
+getinpg:
+	- sudo docker exec -it postgres /bin/bash
 

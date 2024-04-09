@@ -3,3 +3,6 @@
 .env
 .vscode
 .venv
+__pycache__/*
+logs/nginx/*
+logs/django/*
