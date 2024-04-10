@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Box, Flex, Heading } from "@radix-ui/themes";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import UploadPdf from "./UploadPdf";
 
 const Navbar: React.FC = () => {
@@ -36,13 +36,13 @@ const Navbar: React.FC = () => {
           </Heading>
         </Box>
         <Box className="space-x-6">
-          <Link to="/" className="hover:underline text-lg">
+          <Link href="/" className="hover:underline text-lg">
             Home
           </Link>
           {/* <Link to="/trends" className="hover:underline text-lg">
             Trending
           </Link> */}
-          <Link to="/" className="hover:underline text-lg">
+          <Link href="/" className="hover:underline text-lg">
             Contact Us
           </Link>
         </Box>

@@ -8,7 +8,7 @@ import {
   ScrollArea,
   Text,
 } from "@radix-ui/themes";
-import React, { useState } from "react";
+import React from "react";
 import ReactPlayer from "react-player";
 import PdfViewer from "./PdfViewer";
 
@@ -32,7 +32,7 @@ const CardDialog: React.FC<CardDialogProps> = ({
           maxWidth: 1000,
           maxHeight: "750px",
           padding: 0,
-          margin: 0,
+          margin: "auto",
           overflow: "hidden",
         }}
       >

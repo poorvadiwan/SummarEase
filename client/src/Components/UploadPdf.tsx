@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Flex,
@@ -10,8 +12,7 @@ import {
   Separator,
 } from "@radix-ui/themes";
 import { useDropzone } from "react-dropzone";
-import { sendPDF } from "../Data/SummaryData";
-import { sendSMS } from "../Data/Message";
+import { sendPDF } from "@/Data/SummaryData";
 import { toast } from "react-toastify";
 
 const dummy = {
@@ -52,7 +53,6 @@ const UploadPdf = () => {
     sendPDF(selectedFiles[0])
       .then((res: any) => {
         setPdfResult(res?.data);
-        sendSMS(res?.data.document);
       })
       .catch((err) => {
         console.log(err);
@@ -82,7 +82,7 @@ const UploadPdf = () => {
       className="pt-2 pb-16 px-4 text-white"
     >
       {/* Dialog for submition */}
-      <Dialog.Root open={enterNumberDialog}>
+      {/* <Dialog.Root open={enterNumberDialog}>
         <Dialog.Content style={{ maxWidth: 450 }}>
           <Dialog.Title>Enter Your Details</Dialog.Title>
           <Dialog.Description size="2" mb="4">
@@ -106,7 +106,7 @@ const UploadPdf = () => {
               <TextField.Input
                 defaultValue="7987746758"
                 value={mobNumber}
-                onChange={(e) => setModNumber(e.target.value)}
+                onChange={(e: any) => setModNumber(e.target.value)}
                 placeholder="Enter your mobile number"
               />
             </label>
@@ -136,7 +136,7 @@ const UploadPdf = () => {
             </Dialog.Close>
           </Flex>
         </Dialog.Content>
-      </Dialog.Root>
+      </Dialog.Root> */}
 
       {/* Main Headings */}
       <Box className="flex flex-col gap-4 align-center font-secondary">
