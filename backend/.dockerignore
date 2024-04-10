@@ -1,0 +1,7 @@
+./logs
+.env2
+.gitignore
+./docker-compose.prod.yml
+./Dockerfile.prod
+Makefile
+temp.logs
