@@ -5,7 +5,27 @@ from multiprocessing import Manager
 from time import sleep
 
 
-def h1_keyword_extractor(sentence) -> str:
+def h1_keyword_extractor_v2(sentence) -> str:
+    print("Keyword extraction started!!")
+    url = "https://api-inference.huggingface.co/models/transformer3/H1-keywordextractor"
+
+    url = "http://172.171.241.89:1338/api/v1/extract-keywords"
+
+    payload = json.dumps({
+        "text": sentence
+    })
+
+    headers = {
+    'Content-Type': 'application/json'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print("Keywords extracted!!")
+    return response
+
+
+def h1_keyword_extractor_v1(sentence) -> str:
     print("Keyword extraction started!!")
     url = "https://api-inference.huggingface.co/models/transformer3/H1-keywordextractor"
 
@@ -23,7 +43,7 @@ def h1_keyword_extractor(sentence) -> str:
     if 'error' in response.text:
         print("Keyword extraction failed, trying again!!")
         sleep(5)
-        response = h1_keyword_extractor(sentence)
+        response = h1_keyword_extractor_v1(sentence)
 
     print("Keywords extracted!!")
     return response
@@ -42,7 +62,7 @@ def keywords_list_processor(keywords_list: list) -> str:
 
 
 def get_and_process_keywords_from_sentence(sentence: str) -> str:
-    keyword = h1_keyword_extractor(sentence)
+    keyword = h1_keyword_extractor_v2(sentence)
     keyword = json.loads(keyword.text)[0].get('summary_text')
     keyword = keyword.split(', ')
     keyword = keywords_list_processor(keyword)
