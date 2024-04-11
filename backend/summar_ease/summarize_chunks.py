@@ -1,0 +1,67 @@
+import time
+import json
+import requests
+from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Manager
+
+
+def keywords_processor_multithreading(summary_sentences: list):
+    print(summary_sentences)
+    manager = Manager()
+    extracted_keywords = manager.dict()
+
+    def process_sentence(index, text):
+        extracted_keywords[index] = get_and_process_keywords_from_sentence(text)
+
+    with ThreadPoolExecutor(max_workers=15) as executor:
+        for i, text in enumerate(summary_sentences):
+            executor.submit(process_sentence, i, text)
+
+    return extracted_keywords
+
+
+def extract_keywords(sentence):
+    print("Keyword extraction started!!")
+    url = "https://api-inference.huggingface.co/models/transformer3/H1-keywordextractor"
+
+    payload = {
+        "inputs": sentence
+    }
+
+    headers = {
+        'Authorization': 'Bearer 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',
+        'Content-Type': 'application/json'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    if 'error' in response.text:
+        print("Keyword extraction failed, trying again!!")
+        time.sleep(5)
+        response = extract_keywords(sentence)
+
+    print("Keywords extracted!!")
+    return response
+
+
+def keywords_list_processor(keywords_list: list):
+    max_words_in_keyword = 0
+    curr_keyword = None
+
+    for i, keyword in enumerate(keywords_list):
+        keyword = keyword.split(' ')
+        if len(keyword) > max_words_in_keyword:
+            max_words_in_keyword = len(keyword)
+            curr_keyword = keywords_list[i]
+
+    return curr_keyword
+
+
+def get_and_process_keywords_from_sentence(sentence: str):
+    keyword = extract_keywords(sentence)
+    keyword = json.loads(keyword.text)[0].get('summary_text')
+    keyword = keyword.split(', ')
+    keyword = keywords_list_processor(keyword)
+    # print(keyword)
+
+    return keyword.strip()

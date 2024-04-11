@@ -49,8 +49,7 @@ filelock==3.13.1
 fqdn==1.5.1
 frozenlist==1.4.1
 fsspec==2023.12.2
-future==1.0.0
-google-images-download==2.8.0
+google_images_download==2.8.0
 greenlet==3.0.3
 gTTS==2.5.1
 h11==0.14.0
@@ -128,6 +127,7 @@ prometheus-client==0.19.0
 prompt-toolkit==3.0.43
 psutil==5.9.8
 psycopg2==2.9.9
+psycopg2-binary==2.9.9
 ptyprocess==0.7.0
 pure-eval==0.2.2
 pycparser==2.21
@@ -135,7 +135,6 @@ pydantic==2.6.1
 pydantic_core==2.16.2
 pydub==0.25.1
 Pygments==2.17.2
-PyJWT==2.8.0
 pymongo==4.6.1
 PyMuPDF==1.23.18
 PyMuPDFb==1.23.9
