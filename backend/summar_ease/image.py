@@ -1,11 +1,11 @@
 import os
 from concurrent.futures import ThreadPoolExecutor
-from icrawler.builtin import ImageDownloader, GoogleImageCrawler
+from icrawler.builtin import ImageDownloader, GoogleImageCrawler, BingImageCrawler
 from multiprocessing import Process, Manager
 
 
 def download_image_from_keyword(keyword: str, index: int) -> None:
-    google_crawler = GoogleImageCrawler(storage={'root_dir': './'}, downloader_cls=ImageDownloader)
+    google_crawler = BingImageCrawler(storage={'root_dir': './'}, downloader_cls=ImageDownloader)
     google_crawler.crawl(keyword=keyword, max_num=1, file_idx_offset=index)
 
 
