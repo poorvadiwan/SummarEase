@@ -7,8 +7,6 @@ from time import sleep
 
 def h1_keyword_extractor_v2(sentence) -> str:
     print("Keyword extraction started!!")
-    url = "https://api-inference.huggingface.co/models/transformer3/H1-keywordextractor"
-
     url = "http://172.171.241.89:1338/api/v1/extract-keywords"
 
     payload = json.dumps({
