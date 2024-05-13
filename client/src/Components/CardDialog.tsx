@@ -58,7 +58,7 @@ const CardDialog: React.FC<CardDialogProps> = ({
                 <Box style={{ height: "50%" }}>
                   <ReactPlayer
                     url={
-                      // summaries[activeCard]?.video ||
+                      summaries[activeCard]?.video ||
                       "https://live-par-2-abr.livepush.io/vod/bigbuckbunnyclip.mp4"
                     }
                     height={"100%"}
