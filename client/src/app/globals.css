@@ -35,7 +35,7 @@ body,
   font-family: var(--primary-font) !important;
   font-size: 16px;
   color: #fff;
-  background-color: var(--background-color);
+  /* background-color: var(--background-color); */
 }
 
 .rt-Button {
@@ -101,6 +101,12 @@ body,
 
 .video-player * {
   border-radius: 10px;
+}
+
+#navbar *,
+#navbar,
+#navbar * * {
+  background-color: #30353c;
 }
 
 /* .bg-navbar {

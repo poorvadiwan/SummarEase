@@ -36,18 +36,18 @@ const SummaryGrid: React.FC = () => {
   }, []);
 
   return (
-    <Section className="w-[90%] max-w-[1200px] h-[85vh] mx-auto !py-16 !flex flex-col justify-center">
+    <Section className="relative w-[90%] max-w-[1200px] h-screen mx-auto !py-24 !flex flex-col justify-center">
       <CardDialog
         summaries={summaries}
         activeCard={activeCard}
         activeCardPopup={activeCardPopup}
         handleActiveCardPopup={(arg: boolean) => setActiveCardPopup(arg)}
       />
-      <Flex direction={"column"} gap={"8"}>
+      <Flex direction={"column"} gap={{ md: "8", initial: "4" }}>
         {/* Heading */}
         <Heading
           as="h2"
-          className="!text-[4vw] header-primary text-center py-10"
+          className="md:!text-[3.5vw] !text-3xl header-primary text-center md:py-10"
           weight={"bold"}
         >
           Top Summaries <Strong className="text-secondary">Today.</Strong>
@@ -58,11 +58,11 @@ const SummaryGrid: React.FC = () => {
           as="h3"
           align={"center"}
           weight={"regular"}
-          className="!text-2xl text-center"
+          className="md:!text-2xl !text-lg text-center"
         >
           Get access to our video library which contains video summaries to
           books, articles, blogs etc. Don’t forget to engage with the{" "}
-          <Strong className="text-primary">community</Strong> though{":)"}
+          <Strong className="text-primary">community</Strong> though{" :)"}
         </Heading>
 
         {/* Grid */}
@@ -97,7 +97,6 @@ const SummaryGrid: React.FC = () => {
               </video> */}
               <Box className="video-player !bg-[var(--gray-3)] h-[180px]">
                 <ReactPlayer
-                  key={"vimeo"}
                   light={true}
                   url={
                     // item?.video ||
@@ -122,7 +121,11 @@ const SummaryGrid: React.FC = () => {
                 direction="column"
                 justify="between"
                 // className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 w-full"
-                className="w-full !bg-[var(--gray-3)]"
+                className="w-full !bg-[var(--gray-3)] !cursor-pointer"
+                onClick={() => {
+                  setActiveCard(index);
+                  setActiveCardPopup(true);
+                }}
               >
                 {/* <Flex p="4" justify="end">
                   <IconButton

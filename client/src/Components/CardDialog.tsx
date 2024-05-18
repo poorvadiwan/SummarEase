@@ -39,7 +39,7 @@ const CardDialog: React.FC<CardDialogProps> = ({
         <Grid columns={"2"} style={{ overflow: "hidden" }}>
           <Box>
             <Dialog.Title
-              className="flex flex-row justify-between bg-primary px-4 py-3 gap-4"
+              className="flex flex-row justify-between bg-[var(--gray-5)] px-4 py-3 gap-4"
               style={{ margin: "0 !important" }}
             >
               <Text className="text-white heading-primary my-0">
@@ -57,6 +57,7 @@ const CardDialog: React.FC<CardDialogProps> = ({
               <Flex direction={"column"} gap={"5"} style={{ height: "100%" }}>
                 <Box style={{ height: "50%" }}>
                   <ReactPlayer
+                    light="true"
                     url={
                       summaries[activeCard]?.video ||
                       "https://live-par-2-abr.livepush.io/vod/bigbuckbunnyclip.mp4"

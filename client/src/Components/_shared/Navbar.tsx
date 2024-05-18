@@ -7,7 +7,10 @@ import { RiMenu2Fill } from "react-icons/ri";
 
 const Navbar = () => {
   return (
-    <Box id="navbar" className="relative text-white w-full p-6 px-[50px]">
+    <Box
+      id="navbar"
+      className="relative text-white w-full p-4 px-[50px] border-b-[1px] border-secondary"
+    >
       <Flex direction={"row"} align={"center"} justify={"between"}>
         {/* Logo */}
         <Heading as="h1" size={{ sm: "5", initial: "3" }}>
@@ -52,15 +55,15 @@ const Navbar = () => {
             </Button>
             <Flex direction={"row"} align={"center"} gap={"4"}>
               <Button
-                variant={"soft"}
-                className="!text-white !bg-[var(--gray-4)]"
+                // variant={"soft"}
+                className="!text-black !bg-secondary !w-[85px]"
                 size={"3"}
               >
-                Sign In
+                Login
               </Button>
               <Button
-                variant={"soft"}
-                className="!text-black !bg-primary"
+                // variant={"soft"}
+                className="!text-black !bg-primary !w-[85px]"
                 size={"3"}
               >
                 Sign Up
