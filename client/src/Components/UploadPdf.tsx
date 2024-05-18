@@ -50,7 +50,7 @@ const UploadPdf = () => {
     // CALL VONAGE TO SEND MAIL
     console.log(selectedFiles);
     // costly api call
-    sendPDF(selectedFiles[0])
+    sendPDF(selectedFiles[0], "shukla.vaibhav1077@gmail.com")
       .then((res: any) => {
         setPdfResult(res?.data);
       })

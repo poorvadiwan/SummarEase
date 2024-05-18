@@ -2,22 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fonts */
-@font-face {
-  font-family: "Inter";
-  src: local("Inter"), url("../assets/Inter\ Desktop/Inter-Regular.otf");
-}
-
-@font-face {
-  font-family: "Product_Sans";
-  src: local("Product Sans"),
-    url("../assets/Product/Product\ Sans\ Regular.ttf");
-}
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;900&display=swap"); /* Fira Sans */
 
 :root {
   /* FONT */
-  --primary-font: Inter;
-  --secondary-font: Product_Sans;
+  --primary-font: "Fira Sans", sans-serif;
+  --secondary-font: "Lato", sans-serif;
 
   /* FONT WEIGHT */
   --font-normal: 400;
@@ -27,10 +18,10 @@
   --font-extra-bold: 900;
 
   /* COLORS */
-  --primary-color: #005ea8;
-  --background-color: #f8f6f6;
-  --dark-color: #3e3e3e;
-  --light-color: #ffffff;
+  --primary-color: #3bd5dc;
+  --background-color: #1b1d20;
+  --secondary-color: #ffa500;
+  --light-color: #def2fc;
 
   /* z-index */
   --z-tooltip: 10;
@@ -39,13 +30,20 @@
 }
 
 html,
-body {
+body,
+* {
   font-family: var(--primary-font) !important;
-  /* font-size: 1.2em; */
+  font-size: 16px;
+  color: #fff;
+  background-color: var(--background-color);
+}
+
+.rt-Button {
+  cursor: pointer !important;
 }
 
 .header-primary {
-  font-family: var(--secondary-font) !important;
+  font-family: var(--seondary-font) !important;
 }
 
 .carousel-container {
@@ -99,6 +97,10 @@ body {
 
 .video-element:hover {
   pointer-events: none;
+}
+
+.video-player * {
+  border-radius: 10px;
 }
 
 /* .bg-navbar {
