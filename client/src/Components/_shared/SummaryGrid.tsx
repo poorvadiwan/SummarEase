@@ -13,9 +13,7 @@ import {
   Strong,
   Text,
 } from "@radix-ui/themes";
-import CardDialog from "./CardDialog";
-import { HeartIcon, ReaderIcon } from "@radix-ui/react-icons";
-import YouTubePlayer from "react-player/youtube";
+import CardDialog from "../CardDialog";
 import ReactPlayer from "react-player/lazy";
 
 const SummaryGrid: React.FC = () => {
@@ -36,7 +34,7 @@ const SummaryGrid: React.FC = () => {
   }, []);
 
   return (
-    <Section className="relative w-[90%] max-w-[1200px] h-screen mx-auto !py-24 !flex flex-col justify-center">
+    <Section className="relative w-[90%] max-w-[1400px] h-screen mx-auto !py-24 !flex flex-col justify-center">
       <CardDialog
         summaries={summaries}
         activeCard={activeCard}
@@ -68,7 +66,7 @@ const SummaryGrid: React.FC = () => {
         {/* Grid */}
         <Grid
           columns={{ md: "3", initial: "1" }}
-          gap={"6"}
+          gap={{ md: "8", initial: "4" }}
           align={"center"}
           justify={"center"}
           width={"full"}
@@ -76,67 +74,38 @@ const SummaryGrid: React.FC = () => {
           {summaries.slice(0, 3).map((item: any, index: number) => (
             <Box
               key={index}
-              className="!bg-[var(--gray-3)] p-4 rounded-md border-[1.5px] border-secondary"
+              className="!bg-[var(--gray-3)]  border-[1.5px] border-secondary"
               // style={{ paddingBottom: "56.25%" }} // 16:9 aspect ratio
             >
-              {/* <video
-                id={`video-${index}`}
-                className="video-element absolute inset-0 w-full h-full"
-                muted
-                autoPlay={false}
-                loop
-                playsInline
-              >
-                <source
-                  src={
-                    //   item?.video ||
-                    "https://live-par-2-abr.livepush.io/vod/bigbuckbunnyclip.mp4"
-                  }
-                  type="video/mp4"
-                />
-              </video> */}
-              <Box className="video-player !bg-[var(--gray-3)] h-[180px]">
+              <Box className="video-player !bg-[var(--gray-1)] h-[180px]">
                 <ReactPlayer
-                  light={true}
+                  key={"youtube"}
+                  // light={true}
+                  light={
+                    // item?.thumbnail ||
+                    "/Logo.png"
+                  }
                   url={
-                    // item?.video ||
+                    item?.video ||
                     "https://live-par-2-abr.livepush.io/vod/bigbuckbunnyclip.mp4"
                   }
                   width="100%"
                   height="100%"
                   controls={true}
+                  zoom={1}
                 />
               </Box>
-              {/* <ReactPlayer
-                key={"vimeo"}
-                url={
-                  // item?.video ||
-                  "https://live-par-2-abr.livepush.io/vod/bigbuckbunnyclip.mp4"
-                }
-                width="100%"
-                height="100%"
-                controls={true}
-              /> */}
+
               <Flex
                 direction="column"
                 justify="between"
                 // className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 w-full"
-                className="w-full !bg-[var(--gray-3)] !cursor-pointer"
+                className="w-full p-4 pt-0 !bg-[var(--gray-3)] !cursor-pointer"
                 onClick={() => {
                   setActiveCard(index);
                   setActiveCardPopup(true);
                 }}
               >
-                {/* <Flex p="4" justify="end">
-                  <IconButton
-                    variant="soft"
-                    className="text-white !cursor-pointer"
-                    aria-label="Like"
-                    size={"3"}
-                  >
-                    <HeartIcon color="white" width="25" height="25" />
-                  </IconButton>
-                </Flex> */}
                 <Flex
                   direction={"column"}
                   justify={"between"}
@@ -148,22 +117,6 @@ const SummaryGrid: React.FC = () => {
                   <Text className="text-white text-lg !bg-[var(--gray-3)]">
                     {item.summary.substring(0, 50)}...
                   </Text>
-                  {/* <Flex justify="between">
-                    <Button
-                      variant="solid"
-                      size={"3"}
-                      style={{ borderRadius: "20px" }}
-                      className="text-white !text-lg !cursor-pointer"
-                      aria-label="View More Details"
-                      onClick={() => {
-                        setActiveCard(index);
-                        setActiveCardPopup(true);
-                      }}
-                    >
-                      <ReaderIcon width={"20"} height={"20"} />
-                      View Details
-                    </Button>
-                  </Flex> */}
                 </Flex>
               </Flex>
             </Box>

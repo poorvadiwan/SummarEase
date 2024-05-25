@@ -99,9 +99,9 @@ body,
   pointer-events: none;
 }
 
-.video-player * {
+/* .video-player * {
   border-radius: 10px;
-}
+} */
 
 #navbar *,
 #navbar,

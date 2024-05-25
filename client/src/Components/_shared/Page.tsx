@@ -11,7 +11,11 @@ const Page: React.FC<PageProps> = ({ children, className, style }) => {
   return (
     <Section
       className={className}
-      style={{ ...style, backgroundColor: "var(--background-color)" }}
+      style={{
+        ...style,
+        minHeight: "calc(100vh - 6rem)",
+        backgroundColor: "var(--background-color)",
+      }}
     >
       {children}
     </Section>

@@ -31,11 +31,8 @@ export default function RootLayout({
           radius="large"
           scaling="95%"
         >
-          <Navbar />
-
           <main>{children}</main>
-          {/* Footer */}
-        </Theme>
+                  </Theme>
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Heading, Strong, Text } from "@radix-ui/themes";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 type Props = {};
@@ -18,7 +19,7 @@ const Hero = (props: Props) => {
         align={"start"}
         justify={"center"}
         gap={"5"}
-        className="absolute left-[60px] top-[27vh] "
+        className="absolute left-[60px] top-[24vh] "
       >
         {/* HEADER */}
         <Heading
@@ -45,13 +46,13 @@ const Hero = (props: Props) => {
             size={{ md: "4", initial: "2" }}
             className="!bg-primary !font-bold"
           >
-            {"Try Now ->"}
+            <Link href="/app">{"Try Now ->"}</Link>
           </Button>
           <Button
             size={{ md: "4", initial: "2" }}
             className="!bg-[var(--gray-4)] !text-white !font-bold"
           >
-            Learn More
+            <Link href="/auth">Learn More</Link>
           </Button>
         </Flex>
       </Flex>

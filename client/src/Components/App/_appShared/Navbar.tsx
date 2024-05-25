@@ -1,18 +1,24 @@
-import { Box, Button, Flex, Heading, IconButton, Text } from "@radix-ui/themes";
+import { Box, Button, Flex, Heading, IconButton } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FaHamburger } from "react-icons/fa";
-import { FaStar, FaVideo } from "react-icons/fa6";
+import { FaStar, FaVideo } from "react-icons/fa";
 import { RiMenu2Fill } from "react-icons/ri";
 
-const Navbar = () => {
+type Props = {};
+
+const Navbar = (props: Props) => {
   return (
     <Box
-      id="navbar"
-      className="relative text-white w-full p-4 px-[50px] border-b-[1px] border-secondary"
+      id="navbar-app"
+      className="relative z-[2] text-white  p-4 !m-0 bg-[#30353c]  px-[50px] border-b-[1px] border-primary"
     >
-      <Flex direction={"row"} align={"center"} justify={"between"}>
+      <Flex
+        direction={"row"}
+        align={"center"}
+        justify={"between"}
+        className="mx-auto md:w-4/5 w-100"
+      >
         {/* Logo */}
         <Heading as="h1" size={{ sm: "5", initial: "3" }}>
           <Flex
@@ -54,28 +60,8 @@ const Navbar = () => {
             </Button>
             <Button variant={"ghost"} className="!text-white" size={"4"}>
               <FaStar />
-              Pricing
+              Favourites
             </Button>
-            <Flex direction={"row"} align={"center"} gap={"4"}>
-              <Button
-                // variant={"soft"}
-                className="!text-black !bg-secondary !w-[90px]"
-                size={"3"}
-              >
-                <Link href={"/auth/signin"} className="!bg-secondary">
-                  Sign In
-                </Link>
-              </Button>
-              <Button
-                // variant={"soft"}
-                className="!text-black !bg-primary !w-[90px]"
-                size={"3"}
-              >
-                <Link href={"/auth"} className="!bg-primary">
-                  Sign Up
-                </Link>
-              </Button>
-            </Flex>
           </Flex>
         </nav>
 
