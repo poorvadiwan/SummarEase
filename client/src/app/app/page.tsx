@@ -5,6 +5,7 @@ import { useDropzone } from "react-dropzone";
 import Page from "@/Components/_shared/Page";
 import { Flex, Heading, Button, Text, Progress, Box } from "@radix-ui/themes";
 import Image from "next/image";
+import Link from "next/link";
 
 const UploadPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -145,7 +146,7 @@ const UploadPage: React.FC = () => {
                 : "2px dashed #ccc",
               padding: "20px",
               width: "100%",
-              height: "calc(100vh - 450px)",
+              height: "calc(100vh - 470px)",
               textAlign: "center",
               margin: "20px 0",
               cursor: "pointer",
@@ -245,7 +246,7 @@ const UploadPage: React.FC = () => {
                 VIEW CTA - Your video has been generated.
               </Heading>
               <Button size="4" className="!text-2xl !py-4 !px-8 !bg-secondary">
-                View here.
+                <Link href="/app/gallery">View here.</Link>
               </Button>
             </>
           )}

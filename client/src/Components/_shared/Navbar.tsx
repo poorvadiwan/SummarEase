@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <Box
       id="navbar"
-      className="relative text-white w-full p-4 px-[50px] border-b-[1px] border-secondary"
+      className="relative text-white w-full p-3 px-[50px] border-b-[1px] border-secondary"
     >
       <Flex direction={"row"} align={"center"} justify={"between"}>
         {/* Logo */}

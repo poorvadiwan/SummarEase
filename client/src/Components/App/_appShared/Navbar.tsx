@@ -11,14 +11,9 @@ const Navbar = (props: Props) => {
   return (
     <Box
       id="navbar-app"
-      className="relative z-[2] text-white  p-4 !m-0 bg-[#30353c]  px-[50px] border-b-[1px] border-primary"
+      className="relative z-[2] text-white  p-3 !m-0 bg-[#30353c]  px-[50px] border-b-[1px] border-primary"
     >
-      <Flex
-        direction={"row"}
-        align={"center"}
-        justify={"between"}
-        className="mx-auto md:w-4/5 w-100"
-      >
+      <Flex direction={"row"} align={"center"} justify={"between"}>
         {/* Logo */}
         <Heading as="h1" size={{ sm: "5", initial: "3" }}>
           <Flex
