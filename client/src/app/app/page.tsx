@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useCallback, ChangeEvent } from "react";
+import React, { useState, useCallback, ChangeEvent, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import Page from "@/Components/_shared/Page";
 import { Flex, Heading, Button, Text, Progress, Box } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";
+import { sendPDF } from "@/Data/SummaryData";
 
 const UploadPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -13,6 +14,7 @@ const UploadPage: React.FC = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [videoProgress, setVideoProgress] = useState(0);
   const [videoStatus, setVideoStatus] = useState("Summarizing");
+  const [videoResponse, setVideoResponse] = useState<any>(null);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFile(acceptedFiles[0]);
@@ -62,7 +64,31 @@ const UploadPage: React.FC = () => {
     requestAnimationFrame(step);
   };
 
-  const handleSubmit = (): void => {
+  const simulateVideoProgress = () => {
+    const interval = setInterval(() => {
+      setVideoProgress((prevProgress) => {
+        if (prevProgress >= 95) {
+          clearInterval(interval);
+          return 95;
+        }
+        let newProgress = prevProgress + Math.random() * 5;
+        if (newProgress > 95) {
+          newProgress = 95;
+        }
+        if (newProgress < 30) {
+          setVideoStatus("Summarizing");
+        } else if (newProgress < 70) {
+          setVideoStatus("Visualizing");
+        } else if (newProgress < 95) {
+          setVideoStatus("Generating");
+        }
+        return newProgress;
+      });
+    }, 500);
+    return () => clearInterval(interval);
+  };
+
+  const handleSubmit = async () => {
     if (file) {
       setUploading(true);
 
@@ -70,34 +96,37 @@ const UploadPage: React.FC = () => {
       simulateProgress(
         0,
         100,
-        3000,
+        10000,
         (progress) => {
           setUploadProgress(progress);
         },
-        handleVideoGeneration
+        async () => {
+          // Once upload is complete, start the video generation process
+          setVideoProgress(0);
+          setVideoStatus("Summarizing");
+
+          const stopSimulation = simulateVideoProgress();
+
+          try {
+            const response = await sendPDF(
+              file,
+              "shukla.vaibhav1077@gmail.com"
+            );
+            setVideoResponse(response);
+
+            // Complete the progress once we get the response
+            setVideoProgress(100);
+            setVideoStatus("Completed");
+            stopSimulation();
+          } catch (error) {
+            console.error("Error during file processing:", error);
+            stopSimulation();
+          }  
+        }
       );
     } else {
       document.getElementById("fileInput")?.click();
     }
-  };
-
-  const handleVideoGeneration = () => {
-    setVideoProgress(0);
-    setVideoStatus("Summarizing");
-
-    // Simulate video generation progress
-    simulateProgress(0, 100, 10000, (progress) => {
-      setVideoProgress(progress);
-      if (progress < 30) {
-        setVideoStatus("Summarizing");
-      } else if (progress < 70) {
-        setVideoStatus("Visualizing");
-      } else if (progress < 100) {
-        setVideoStatus("Generating");
-      } else {
-        setVideoStatus("Completed");
-      }
-    });
   };
 
   return (
@@ -246,7 +275,9 @@ const UploadPage: React.FC = () => {
                 VIEW CTA - Your video has been generated.
               </Heading>
               <Button size="4" className="!text-2xl !py-4 !px-8 !bg-secondary">
-                <Link href="/app/gallery">View here.</Link>
+                <Link href={`/app/gallery/${videoResponse?.id ?? ""}`}>
+                  View here.
+                </Link>
               </Button>
             </>
           )}
